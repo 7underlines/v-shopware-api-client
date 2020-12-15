@@ -1,0 +1,97 @@
+module shopware
+
+import json
+import net.http
+import os
+
+pub fn (mut l Login) upload(file_url string, name string, media_folder_id string) ?string {
+	data := '{"mediaFolderId": "$media_folder_id"}'
+	resp2 := l.post('media?_response=true', data)
+	shopres := json.decode(ShopResponseSingle, resp2) or {
+		println("Can't json decode shop media response - response from shop:")
+		println(resp2)
+		exit(1)
+	}
+	ext := os.file_ext(file_url)
+	ext2 := ext[1..]
+	data2 := '{"url":"$file_url"}'
+	l.auth()
+	config := http.FetchConfig{
+		headers: {
+			'Content-Type': default_content_type
+			'Accept': accept_all
+			'Authorization': 'Bearer $l.token.access_token'
+		}
+		data: data2
+		method: .post
+	}
+	url := l.api_url + l.api_version +
+		'_action/media/$shopres.data.id/upload?extension=$ext2&fileName=${strip(name)}'
+	resp := http.fetch(url, config) or {
+		println('HTTP POST request to shop failed - url: $url - error:')
+		println(err)
+		exit(1)
+	}
+	if resp.status_code == 500 {
+		shopr := json.decode(ShopResponseError, resp.text) or {
+			println("Can't json decode shop response - response from shop:")
+			println(resp.text)
+			exit(1)
+		}
+		for e in shopr.errors {
+			if e.code == 'CONTENT__MEDIA_DUPLICATED_FILE_NAME' {
+				l.delete('media', shopres.data.id) // clean the placeholder media
+				return error('Error duplicate file name')
+			}
+		}
+	}
+	if resp.status_code != 204 && resp.status_code != 200 {
+		println('Error response from shop at POST - url: $url - statuscode: $resp.status_code - response from shop:')
+		println(resp.text)
+		println('Data send to shop:')
+		println(data)
+		exit(1)
+	}
+	if resp.status_code == 204 {
+		if resp.headers['Location'] != '' {
+			pos := resp.headers['Location'].last_index('/') or {
+				-1
+			}
+			return resp.headers['Location'][pos + 1..]
+		} else {
+			return resp.text
+		}
+	} else {
+		return resp.text
+	}
+}
+
+pub fn (mut l Login) add_media_to_product(media_id string, product_id string, set_as_cover bool, position int) { // position should begin with 0
+	mut product_media_id := ''
+	data_product := '{"media":[{"mediaId":"$media_id", "position": $position}]}'
+	l.patch('product/$product_id', data_product)
+	if !set_as_cover {
+		return
+	}
+	r := l.get('product/$product_id/media')
+	pm := json.decode(ShopResponseFind, r) or {
+		println("Can't json decode shop product media response - response from shop:")
+		println(r)
+		exit(1)
+	}
+	if pm.meta.total == 0 {
+		println('No product_media entries found for product id $product_id')
+		exit(1)
+	}
+	for p in pm.data {
+		if p.attributes.media_id == media_id {
+			product_media_id = p.id
+		}
+	}
+	if product_media_id == '' {
+		println("Couldn't get product_media_id for product id $product_id")
+		exit(1)
+	}
+	data_cover := '{"coverId": "$product_media_id"}'
+	l.patch('product/$product_id', data_cover)
+}

@@ -8,13 +8,13 @@ Shopware API credentials can be generated in the shopware backend (Settings->Sys
 
 ## Usage:
 ```shell
-v install logtom.shopware
+v install logTom.shopwareac
 ```
 ... then in your v source:
 ```v
 module main
 
-import logtom.shopware
+import logTom.shopwareac
 
 struct ShopResponse {
 	data []ShopResponseData
@@ -24,7 +24,7 @@ struct ShopResponseData {
 }
 
 fn main(){
-    mut conn := shopware.Login{
+    mut conn := shopwareac.Login{
 		api_url: 'http://localhost:8000/api/'
 		client_id: 'xxx'
 		client_secret: 'xxxxxx'

@@ -1,4 +1,4 @@
-module shopware
+module shopwareac
 
 const (
 	accept_all           = '*/*'

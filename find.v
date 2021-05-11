@@ -1,4 +1,4 @@
-module shopware
+module shopwareac
 
 import json
 import os

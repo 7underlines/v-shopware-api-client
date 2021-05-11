@@ -1,4 +1,4 @@
-module shopware
+module shopwareac
 
 import net.http
 import time

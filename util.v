@@ -1,4 +1,4 @@
-module shopware
+module shopwareac
 
 pub fn encode(s string) string { // Percent-encoding reserved characters eg. for filter parameters
 	mut r := s

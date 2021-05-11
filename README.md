@@ -17,6 +17,7 @@ v install treffner.shopwareac
 module main
 
 import treffner.shopwareac
+import json
 
 struct ShopResponse {
 	data []ShopResponseData

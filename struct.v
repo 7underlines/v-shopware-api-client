@@ -18,8 +18,6 @@ pub:
 	api_url       string
 	client_id     string
 	client_secret string
-pub mut:
-	api_version   string = 'v3/'
 }
 
 struct AuthToken {

@@ -1,4 +1,4 @@
-import logtom.shopware
+import treffner.shopwareac
 import json
 
 struct ShopResponse {
@@ -10,8 +10,7 @@ struct ShopResponseData {
 }
 
 fn main() {
-	// mut is needed for the oauth2 token renewal
-	mut sw_api := shopware.Login{
+	mut sw_api := shopwareac.Login{ // mut is needed for the automated oauth2 token renewal
 		api_url: 'http://localhost:8000/api/'
 		client_id: 'XXXXXXXXXXXXXXXXXXXXXXXXXX' // get this from Shopware 6 backend Settings->System->Integrations
 		client_secret: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'

@@ -17,16 +17,15 @@ pub fn (mut l Login) upload(file_url string, name string, media_folder_id string
 	data2 := '{"url":"$file_url"}'
 	l.auth()
 	config := http.FetchConfig{
-		headers: {
-			'Content-Type': default_content_type
-			'Accept': accept_all
-			'Authorization': 'Bearer $l.token.access_token'
-		}
+		header: http.new_header(
+			{key: .content_type, value: default_content_type},
+			{key: .accept, value: accept_all},
+			{key: .authorization, value: 'Bearer $l.token.access_token'}
+		)
 		data: data2
 		method: .post
 	}
-	url := l.api_url + l.api_version +
-		'_action/media/$shopres.data.id/upload?extension=$ext2&fileName=${strip(name)}'
+	url := l.api_url + '_action/media/$shopres.data.id/upload?extension=$ext2&fileName=${strip(name)}'
 	resp := http.fetch(url, config) or {
 		println('HTTP POST request to shop failed - url: $url - error:')
 		println(err)
@@ -53,11 +52,14 @@ pub fn (mut l Login) upload(file_url string, name string, media_folder_id string
 		exit(1)
 	}
 	if resp.status_code == 204 {
-		if resp.headers['Location'] != '' {
-			pos := resp.headers['Location'].last_index('/') or {
+		location := resp.header.get(.location) or {
+			''
+		}
+		if location != '' {
+			pos := location.last_index('/') or {
 				-1
 			}
-			return resp.headers['Location'][pos + 1..]
+			return location[pos + 1..]
 		} else {
 			return resp.text
 		}

@@ -4,6 +4,7 @@ import json
 import net.http
 import os
 
+// returns the mediaId of the uploaded file on success
 pub fn (mut l Login) upload(file_url string, name string, media_folder_id string) ?string {
 	data := '{"mediaFolderId": "$media_folder_id"}'
 	resp2 := l.post('media?_response=true', data)
@@ -68,6 +69,7 @@ pub fn (mut l Login) upload(file_url string, name string, media_folder_id string
 	}
 }
 
+// position should begin with 0
 pub fn (mut l Login) add_media_to_product(media_id string, product_id string, set_as_cover bool, position int) { // position should begin with 0
 	mut product_media_id := ''
 	data_product := '{"media":[{"mediaId":"$media_id", "position": $position}]}'

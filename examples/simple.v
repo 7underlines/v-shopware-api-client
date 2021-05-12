@@ -15,8 +15,8 @@ fn main() {
 		client_id: 'XXXXXXXXXXXXXXXXXXXXXXXXXX' // get this from Shopware 6 backend Settings->System->Integrations
 		client_secret: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
 	}
-	products_response_raw := sw_api.get('product?limit=1')
-	products_response := json.decode(ShopResponse, products_response_raw) or {
+	response := sw_api.get('product?limit=1')
+	products_response := json.decode(ShopResponse, response) or {
 		println('Failed to decode products json')
 		exit(1)
 	}

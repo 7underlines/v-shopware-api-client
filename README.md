@@ -20,11 +20,19 @@ Shopware API credentials can be generated in the shopware backend (Settings->Sys
 + easy to learn
 + errors during compile time
 
-## Usage:
+## Installation
 ```shell
 v install treffner.shopwareac
 ```
-... then in your v source:
+
+## Running the example
+```shell
+cd examples
+v run simple.v
+```
+
+## Usage:
+In your v source:
 ```v
 module main
 
@@ -38,15 +46,15 @@ struct ShopResponseData {
 	id string
 }
 
-fn main(){
+fn main() {
 	mut sw_api := shopwareac.Login{ // mut is needed for the automated oauth2 token renewal
 		api_url: 'http://localhost:8000/api/'
-		client_id: 'xxx' // get this from Shopware 6 backend Settings->System->Integrations
-		client_secret: 'xxxxxx'
+		client_id: 'XXXXXXXXXXXXXXXXXXXXXXXXXX' // get this from Shopware 6 backend Settings->System->Integrations
+		client_secret: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
 	}
 	response := sw_api.get('product')
-	response_data := json.decode(ShopResponse,response) or {
-		println("can't decode shop response")
+	response_data := json.decode(ShopResponse, response) or {
+		println('Failed decode shop response')
 		exit(1)
 	}
 	for product in response_data.data {

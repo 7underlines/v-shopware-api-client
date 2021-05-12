@@ -17,7 +17,6 @@ Shopware API credentials can be generated in the shopware backend (Settings->Sys
 
 + big imports can take several days
 + parallel processing
-+ easy to learn
 + errors during compile time
 
 ## Installation

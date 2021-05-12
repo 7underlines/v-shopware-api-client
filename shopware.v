@@ -4,7 +4,7 @@ import net.http
 import time
 import json
 
-// auth() get's called automatic and renews the oauth token if needed
+// auth get's called automatic and renews the oauth token if needed
 pub fn (mut l Login) auth() {
 	t := time.now()
 	tu := t.unix_time()
@@ -86,7 +86,7 @@ pub fn (mut l Login) get_raw(endpoint string) http.Response {
 	return resp
 }
 
-// returns the id of the new content on success
+// post returns the id of the created content on success
 pub fn (mut l Login) post(endpoint string, data string) string {
 	l.auth()
 	config := http.FetchConfig{

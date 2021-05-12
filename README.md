@@ -32,7 +32,8 @@ v run simple.v
 v run search.v
 ```
 
-## Example:
+## Example
+This example gets products from the admin api and prints out their product ids.
 ```v
 module main
 

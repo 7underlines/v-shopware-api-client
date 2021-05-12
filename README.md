@@ -15,7 +15,7 @@ Shopware API credentials can be generated in the shopware backend (Settings->Sys
 
 ## Why V
 
-+ big imports can take several days
++ can handle big imports that take several hours
 + parallel processing
 + errors during compile time
 

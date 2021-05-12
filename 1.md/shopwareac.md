@@ -1,76 +1,10 @@
-# V Shopware 6 admin API client
-
-This is a pure [V](https://vlang.io) module that can be used to communicate with the [Shopware 6 API](https://github.com/shopware/platform).
-
-Requires at least shopware 6.4.
-
-Shopware API credentials can be generated in the shopware backend (Settings->System->Integrations).
-
-[Shopware 6 API Docs](https://docs.shopware.com/en/shopware-platform-dev-en/api)
-
-## Features
-
-+ built-in oauth token renewal
-+ useful helper functions for file upload and search
-
-## Why V
-
-+ big imports can take several days
-+ parallel processing
-+ errors during compile time
-
-## Installation
-```shell
-v install treffner.shopwareac
-```
-
-## Running the examples
-Fill in your api credentials in the code placeholders an then run.
-```shell
-cd examples
-v run simple.v
-v run search.v
-```
-
-## Example
-This example gets products from the admin api and prints out their product ids.
-```v
-module main
-
-import treffner.shopwareac
-import json
-
-struct ShopResponse {
-	data []ShopResponseData
-}
-struct ShopResponseData {
-	id string
-}
-
-fn main() {
-	mut sw_api := shopwareac.Login{ // mut is needed for the automated oauth2 token renewal
-		api_url: 'http://localhost:8000/api/'
-		client_id: 'XXXXXXXXXXXXXXXXXXXXXXXXXX' // get this from Shopware 6 backend Settings->System->Integrations
-		client_secret: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
-	}
-	response := sw_api.get('product')
-	response_data := json.decode(ShopResponse, response) or {
-		println('Failed decode shop response')
-		exit(1)
-	}
-	for product in response_data.data {
-		println(product.id)
-	}
-}
-```
-
-# Module documentation
+# module shopwareac
 
 ## Contents
 - [encode](#encode)
 - [strip](#strip)
 - [Login](#Login)
-  - [add_media_to_product](#add_media_to_product)
+  - [upload](#upload)
   - [auth](#auth)
   - [delete](#delete)
   - [find_media_by_name](#find_media_by_name)
@@ -82,14 +16,14 @@ fn main() {
   - [get_raw](#get_raw)
   - [patch](#patch)
   - [post](#post)
-  - [upload](#upload)
+  - [add_media_to_product](#add_media_to_product)
 - [ShopResponseData](#ShopResponseData)
 
 ## encode
 ```v
 fn encode(s string) string
 ```
- Percent-encoding reserved characters eg. for filter parameters 
+
 
 [[Return to contents]](#Contents)
 
@@ -97,7 +31,7 @@ fn encode(s string) string
 ```v
 fn strip(s string) string
 ```
- strip not allowed chars 
+
 
 [[Return to contents]](#Contents)
 
@@ -116,11 +50,11 @@ pub:
 
 [[Return to contents]](#Contents)
 
-## add_media_to_product
+## upload
 ```v
-fn (mut l Login) add_media_to_product(media_id string, product_id string, set_as_cover bool, position int)
+fn (mut l Login) upload(file_url string, name string, media_folder_id string) ?string
 ```
- add_media_to_product position should begin with 0 
+
 
 [[Return to contents]](#Contents)
 
@@ -128,7 +62,7 @@ fn (mut l Login) add_media_to_product(media_id string, product_id string, set_as
 ```v
 fn (mut l Login) auth()
 ```
- auth get's called automatic and renews the oauth token if needed 
+
 
 [[Return to contents]](#Contents)
 
@@ -208,15 +142,15 @@ fn (mut l Login) patch(endpoint string, data string)
 ```v
 fn (mut l Login) post(endpoint string, data string) string
 ```
- post returns the id of the created content on success 
+
 
 [[Return to contents]](#Contents)
 
-## upload
+## add_media_to_product
 ```v
-fn (mut l Login) upload(file_url string, name string, media_folder_id string) ?string
+fn (mut l Login) add_media_to_product(media_id string, product_id string, set_as_cover bool, position int)
 ```
- upload returns the mediaId of the uploaded file on success 
+
 
 [[Return to contents]](#Contents)
 
@@ -232,8 +166,4 @@ pub:
 
 [[Return to contents]](#Contents)
 
-#### Powered by vdoc. Generated on: 12 May 2021 10:49:16
-
-
-## License
-[GPL-3.0](LICENSE)
+#### Powered by vdoc. Generated on: 11 May 2021 20:48:49

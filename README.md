@@ -1,12 +1,12 @@
 # V Shopware 6 admin API client
 
-This is a pure [V](https://vlang.io) module that can be used to communicate with the [Shopware 6 API](https://github.com/shopware/platform).
+This is a pure [V](https://vlang.io) module that can be used to communicate with [Shopware 6](https://github.com/shopware/platform).
 
 Requires at least shopware 6.4.
 
-Shopware API credentials can be generated in the shopware backend (Settings->System->Integrations).
+Shopware Admin API credentials can be generated in the shopware backend (Settings->System->Integrations).
 
-[Shopware 6 API Docs](https://docs.shopware.com/en/shopware-platform-dev-en/api)
+[Shopware 6 Admin API Docs](https://developer.shopware.com/docs/guides/integrations-api/admin-api)
 
 ## Features
 
@@ -15,7 +15,7 @@ Shopware API credentials can be generated in the shopware backend (Settings->Sys
 
 ## Why V
 
-+ can handle big imports that take several hours
++ can handle big imports that may take several hours
 + parallel processing
 + errors during compile time
 

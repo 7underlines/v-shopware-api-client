@@ -31,6 +31,20 @@ pub fn (mut l Login) find_product_by_customfield(field string, value string) ?Sh
 	return response.data[0]
 }
 
+pub fn (mut l Login) find_category_by_customfield(field string, value string) ?ShopResponseData {
+	response_raw := l.get('category/?filter[customFields.$field]=${encode(value)}')
+	response := json.decode(ShopResponseFind, response_raw) or {
+		println('Failed to decode category json')
+		exit(1)
+	}
+	if response.meta.total == 0 {
+		return error('Found none')
+	} else if response.meta.total > 1 {
+		return error('Found multiple')
+	}
+	return response.data[0]
+}
+
 pub fn (mut l Login) find_subcategory_by_name(name string, parent string) ?ShopResponseData {
 	response_raw := l.get('category/?filter[name]=${encode(name)}&filter[parentId]=$parent')
 	response := json.decode(ShopResponseFind, response_raw) or {

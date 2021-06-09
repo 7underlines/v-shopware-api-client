@@ -20,8 +20,31 @@ Shopware Admin API credentials can be generated in the shopware backend (Setting
 + errors during compile time
 
 ## Installation
+
+### Install and use this module as a dependency via v.mod (recommended)
+
+Run "v init" to auto-generate your v.mod file.
+```shell
+v init
+```
+Then edit the dependencies in your v.mod file to look like this: 
+```v
+dependencies: ['treffner.shopwareac']
+```
+And install with:
+```shell
+v install
+```
+To update your dependencies later just run "v install" again.
+
+### Or via VPM:
 ```shell
 v install treffner.shopwareac
+```
+
+### Or through Git:
+```shell
+git clone https://github.com/treffner/v-shopware-api-client.git ~/.vmodules/treffner/shopwareac
 ```
 
 ## Running the examples

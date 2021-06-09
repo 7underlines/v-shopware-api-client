@@ -8,6 +8,8 @@ Shopware Admin API credentials can be generated in the shopware backend (Setting
 
 [Shopware 6 Admin API Docs](https://developer.shopware.com/docs/guides/integrations-api/admin-api)
 
+I recommend to configure the api credentials via .env - take a look at my [dotenv module](https://github.com/treffner/vdotenv).
+
 ## Features
 
 + built-in oauth token renewal

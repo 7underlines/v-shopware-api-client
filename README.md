@@ -6,7 +6,9 @@ Requires at least shopware 6.4.
 
 Shopware Admin API credentials can be generated in the shopware backend (Settings->System->Integrations).
 
-[Shopware 6 Admin API Docs](https://developer.shopware.com/docs/guides/integrations-api/admin-api)
+[Shopware 6 Admin API Endpoint Reference](https://shopware.stoplight.io/docs/admin-api/adminapi.json)
+
+[Shopware 6 Developer Documentation](http://developer.shopware.com/)
 
 I recommend to configure the api credentials via .env - take a look at my [dotenv module](https://github.com/treffner/vdotenv).
 

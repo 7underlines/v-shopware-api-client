@@ -13,7 +13,7 @@ struct LoginShop {
 
 pub struct Login {
 mut:
-	token         AuthToken
+	token AuthToken
 pub:
 	api_url       string
 	client_id     string
@@ -24,8 +24,8 @@ struct AuthToken {
 mut:
 	access_token string
 	expires_in   int
-	request_at   int
-	valid_until  int
+	request_at   i64
+	valid_until  i64
 }
 
 struct ShopResponseFind {
@@ -56,9 +56,9 @@ pub:
 }
 
 struct Attributes {
-	media_id    string [json: mediaId]
+	media_id string [json: mediaId]
 pub:
-	child_count int    [json: childCount]
+	child_count int [json: childCount]
 	stock       int
 }
 

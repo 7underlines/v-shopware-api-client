@@ -11,19 +11,23 @@ pub fn (mut l Login) auth() {
 	if l.token.valid_until > tu { // token is still valid, no need to get a new one
 		return
 	}
+
+	url := l.api_url + 'oauth/token'
+
 	config := http.FetchConfig{
-		method: .post
-		header: http.new_header(
+		header: http.new_header(http.HeaderConfig{
 			key: .content_type
 			value: default_content_type
-		)
+		})
+		method: .post
+		url: url
 		data: json.encode(LoginShop{
 			client_id: l.client_id
 			client_secret: l.client_secret
 		})
 	}
-	url := l.api_url + 'oauth/token'
-	resp := http.fetch(url, config) or {
+
+	resp := http.fetch(config) or {
 		println('HTTP POST request to auth at shop failed - url: $url - error:')
 		println(err)
 		exit(1)
@@ -44,23 +48,9 @@ pub fn (mut l Login) auth() {
 }
 
 pub fn (mut l Login) get(endpoint string) string {
-	l.auth()
-	config := http.FetchConfig{
-		header: http.new_header(
-			{key: .content_type, value: default_content_type},
-			{key: .accept, value: accept_all},
-			{key: .authorization, value: 'Bearer $l.token.access_token'}
-		)
-		method: .get
-	}
-	url := l.api_url + endpoint
-	resp := http.fetch(url, config) or {
-		println('HTTP GET request to shop failed - url: $url - error:')
-		println(err)
-		exit(1)
-	}
+	resp := l.fetch(.get, endpoint, '')
 	if resp.status_code != 200 {
-		println('Problem at fetching data from shop at $url - statuscode: $resp.status_code - response from shop:')
+		println('Problem at fetching data from shop at $endpoint - statuscode: $resp.status_code - response from shop:')
 		println(resp.text)
 		exit(1)
 	}
@@ -68,57 +58,23 @@ pub fn (mut l Login) get(endpoint string) string {
 }
 
 pub fn (mut l Login) get_raw(endpoint string) http.Response {
-	l.auth()
-	config := http.FetchConfig{
-		header: http.new_header(
-			{key: .content_type, value: default_content_type},
-			{key: .accept, value: accept_all},
-			{key: .authorization, value: 'Bearer $l.token.access_token'}
-		)
-		method: .get
-	}
-	url := l.api_url + endpoint
-	resp := http.fetch(url, config) or {
-		println('HTTP GET request to shop failed - url: $url - error:')
-		println(err)
-		exit(1)
-	}
-	return resp
+	return l.fetch(.get, endpoint, '')
 }
 
 // post returns the id of the created content on success
 pub fn (mut l Login) post(endpoint string, data string) string {
-	l.auth()
-	config := http.FetchConfig{
-		header: http.new_header(
-			{key: .content_type, value: default_content_type},
-			{key: .accept, value: accept_all},
-			{key: .authorization, value: 'Bearer $l.token.access_token'}
-		)
-		data: data
-		method: .post
-	}
-	url := l.api_url + endpoint
-	resp := http.fetch(url, config) or {
-		println('HTTP POST request to shop failed - url: $url - error:')
-		println(err)
-		exit(1)
-	}
+	resp := l.fetch(.post, endpoint, data)
 	if resp.status_code != 204 && resp.status_code != 200 {
-		println('Error response from shop at POST - url: $url - statuscode: $resp.status_code - response from shop:')
+		println('Error response from shop at POST - enspoint: $endpoint - statuscode: $resp.status_code - response from shop:')
 		println(resp.text)
 		println('Data send to shop:')
 		println(data)
 		exit(1)
 	}
 	if resp.status_code == 204 {
-		location := resp.header.get(.location) or {
-			''
-		}
+		location := resp.header.get(.location) or { '' }
 		if location != '' {
-			pos := location.last_index('/') or {
-				-1
-			}
+			pos := location.last_index('/') or { -1 }
 			return location[pos + 1..]
 		} else {
 			return resp.text
@@ -129,24 +85,9 @@ pub fn (mut l Login) post(endpoint string, data string) string {
 }
 
 pub fn (mut l Login) patch(endpoint string, data string) {
-	l.auth()
-	config := http.FetchConfig{
-		header: http.new_header(
-			{key: .content_type, value: default_content_type},
-			{key: .accept, value: accept_all},
-			{key: .authorization, value: 'Bearer $l.token.access_token'}
-		)
-		data: data
-		method: .patch
-	}
-	url := l.api_url + endpoint
-	resp := http.fetch(url, config) or {
-		println('HTTP PATCH request to shop failed - url: $url - error:')
-		println(err)
-		exit(1)
-	}
+	resp := l.fetch(.patch, endpoint, data)
 	if resp.status_code != 204 {
-		println('Error response from shop at PATCH - url: $url - statuscode: $resp.status_code - response from shop:')
+		println('Error response from shop at PATCH - endpoint: $endpoint - statuscode: $resp.status_code - response from shop:')
 		println(resp.text)
 		println('Data send to shop:')
 		println(data)
@@ -160,11 +101,11 @@ pub fn (mut l Login) patch(endpoint string, data string) {
 			// 		exit(1)
 			// 	}
 			// 	if resp2.status_code != 204 {
-					println('Error response from shop at PATCH - url: $url - statuscode: $resp.status_code - response from shop:')
-					println(resp.text)
-					println('Data send to shop:')
-					println(data)
-					exit(1)
+			println('Error response from shop at PATCH - endpoint: $endpoint - statuscode: $resp.status_code - response from shop:')
+			println(resp.text)
+			println('Data send to shop:')
+			println(data)
+			exit(1)
 			// 	}
 			// } else {
 			// 	exit(1)
@@ -174,24 +115,36 @@ pub fn (mut l Login) patch(endpoint string, data string) {
 }
 
 pub fn (mut l Login) delete(endpoint string, id string) {
-	l.auth()
-	config := http.FetchConfig{
-		header: http.new_header(
-			{key: .content_type, value: default_content_type},
-			{key: .accept, value: accept_all},
-			{key: .authorization, value: 'Bearer $l.token.access_token'}
-		)
-		method: .delete
-	}
-	url := l.api_url + endpoint + '/' + id
-	resp := http.fetch(url, config) or {
-		println('HTTP DELETE request to shop failed - url: $url - error:')
-		println(err)
-		exit(1)
-	}
+	url := endpoint + '/' + id
+	resp := l.fetch(.delete, url, '')
 	if resp.status_code != 204 {
 		println('Error response from shop at DELETE - url: $url - statuscode: $resp.status_code - response from shop:')
 		println(resp.text)
 		exit(1)
 	}
+}
+
+fn (mut l Login) fetch(method http.Method, url string, data string) http.Response {
+	l.auth()
+	config := http.FetchConfig{
+		header: http.new_header(http.HeaderConfig{
+			key: .content_type
+			value: default_content_type
+		}, http.HeaderConfig{
+			key: .accept
+			value: accept_all
+		}, http.HeaderConfig{
+			key: .authorization
+			value: 'Bearer $l.token.access_token'
+		})
+		method: method
+		url: l.api_url + url
+		data: data
+	} // http.fetch(http.FetchConfig{ ...config, url: '' })
+	resp := http.fetch(config) or {
+		println('HTTP $method request to shop faile    d - url: $l.api_url$url - error:')
+		println(err)
+		exit(1)
+	}
+	return resp
 }

@@ -1,7 +1,6 @@
 module shopwareac
 
 import json
-import net.http
 import os
 
 // upload returns the mediaId of the uploaded file on success
@@ -16,22 +15,8 @@ pub fn (mut l Login) upload(file_url string, name string, media_folder_id string
 	ext := os.file_ext(file_url)
 	ext2 := ext[1..]
 	data2 := '{"url":"$file_url"}'
-	l.auth()
-	config := http.FetchConfig{
-		header: http.new_header(
-			{key: .content_type, value: default_content_type},
-			{key: .accept, value: accept_all},
-			{key: .authorization, value: 'Bearer $l.token.access_token'}
-		)
-		data: data2
-		method: .post
-	}
-	url := l.api_url + '_action/media/$shopres.data.id/upload?extension=$ext2&fileName=${strip(name)}'
-	resp := http.fetch(url, config) or {
-		println('HTTP POST request to shop failed - url: $url - error:')
-		println(err)
-		exit(1)
-	}
+	url := '_action/media/$shopres.data.id/upload?extension=$ext2&fileName=${strip(name)}'
+	resp := l.fetch(.post, url, data2)
 	if resp.status_code == 500 {
 		shopr := json.decode(ShopResponseError, resp.text) or {
 			println("Can't json decode shop response - response from shop:")
@@ -53,13 +38,9 @@ pub fn (mut l Login) upload(file_url string, name string, media_folder_id string
 		exit(1)
 	}
 	if resp.status_code == 204 {
-		location := resp.header.get(.location) or {
-			''
-		}
+		location := resp.header.get(.location) or { '' }
 		if location != '' {
-			pos := location.last_index('/') or {
-				-1
-			}
+			pos := location.last_index('/') or { -1 }
 			return location[pos + 1..]
 		} else {
 			return resp.text

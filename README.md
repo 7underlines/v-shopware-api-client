@@ -100,6 +100,7 @@ fn main() {
   - [add_media_to_product](#add_media_to_product)
   - [auth](#auth)
   - [delete](#delete)
+  - [find_category_by_customfield](#find_category_by_customfield)
   - [find_media_by_name](#find_media_by_name)
   - [find_product_by_customfield](#find_product_by_customfield)
   - [find_product_by_productnumber](#find_product_by_productnumber)
@@ -109,6 +110,7 @@ fn main() {
   - [get_raw](#get_raw)
   - [patch](#patch)
   - [post](#post)
+  - [sync](#sync)
   - [upload](#upload)
 - [ShopResponseData](#ShopResponseData)
 
@@ -116,7 +118,8 @@ fn main() {
 ```v
 fn encode(s string) string
 ```
- Percent-encoding reserved characters eg. for filter parameters 
+
+Percent-encoding reserved characters eg. for filter parameters
 
 [[Return to contents]](#Contents)
 
@@ -124,7 +127,8 @@ fn encode(s string) string
 ```v
 fn strip(s string) string
 ```
- strip not allowed chars 
+
+strip not allowed chars
 
 [[Return to contents]](#Contents)
 
@@ -147,7 +151,8 @@ pub:
 ```v
 fn (mut l Login) add_media_to_product(media_id string, product_id string, set_as_cover bool, position int)
 ```
- add_media_to_product position should begin with 0 
+
+add_media_to_product position should begin with 0
 
 [[Return to contents]](#Contents)
 
@@ -155,13 +160,22 @@ fn (mut l Login) add_media_to_product(media_id string, product_id string, set_as
 ```v
 fn (mut l Login) auth()
 ```
- auth get's called automatic and renews the oauth token if needed 
+
+auth get's called automatic and renews the oauth token if needed
 
 [[Return to contents]](#Contents)
 
 ## delete
 ```v
 fn (mut l Login) delete(endpoint string, id string)
+```
+
+
+[[Return to contents]](#Contents)
+
+## find_category_by_customfield
+```v
+fn (mut l Login) find_category_by_customfield(field string, value string) ?ShopResponseData
 ```
 
 
@@ -235,7 +249,17 @@ fn (mut l Login) patch(endpoint string, data string)
 ```v
 fn (mut l Login) post(endpoint string, data string) string
 ```
- post returns the id of the created content on success 
+
+post returns the id of the created content on success
+
+[[Return to contents]](#Contents)
+
+## sync
+```v
+fn (mut l Login) sync(data string) string
+```
+
+sync API is an add-on to the Admin API that allows you to perform multiple write operations (creating/updating and deleting) simultaneously
 
 [[Return to contents]](#Contents)
 
@@ -243,7 +267,8 @@ fn (mut l Login) post(endpoint string, data string) string
 ```v
 fn (mut l Login) upload(file_url string, name string, media_folder_id string) ?string
 ```
- upload returns the mediaId of the uploaded file on success 
+
+upload returns the mediaId of the uploaded file on success
 
 [[Return to contents]](#Contents)
 
@@ -259,8 +284,7 @@ pub:
 
 [[Return to contents]](#Contents)
 
-#### Powered by vdoc. Generated on: 12 May 2021 10:49:16
-
+#### Powered by vdoc. Generated on: 24 Sep 2021 11:02:35
 
 ## License
 [AGPL-3.0](LICENSE)

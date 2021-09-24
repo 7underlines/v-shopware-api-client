@@ -142,9 +142,48 @@ fn (mut l Login) fetch(method http.Method, url string, data string) http.Respons
 		data: data
 	} // http.fetch(http.FetchConfig{ ...config, url: '' })
 	resp := http.fetch(config) or {
-		println('HTTP $method request to shop faile    d - url: $l.api_url$url - error:')
+		println('HTTP $method request to shop failed - url: $l.api_url$url - error:')
 		println(err)
 		exit(1)
 	}
 	return resp
+}
+
+// sync API is an add-on to the Admin API that allows you to perform multiple write operations (creating/updating and deleting) simultaneously
+pub fn (mut l Login) sync(data string) string {
+	l.auth()
+	mut h := http.new_header(http.HeaderConfig{
+			key: .content_type
+			value: default_content_type
+		}, http.HeaderConfig{
+			key: .accept
+			value: accept_all
+		}, http.HeaderConfig{
+			key: .authorization
+			value: 'Bearer $l.token.access_token'
+		}
+	)
+	h.add_custom('single-operation', '1') or {
+		println('add single-operation sync header failed')
+		exit(1)
+	}
+	config := http.FetchConfig{
+		header: h
+		method: .post
+		url: l.api_url + '_action/sync'
+		data: data
+	}
+	resp := http.fetch(config) or {
+		println('Unable to make HTTP sync request to shop')
+		println(err)
+		exit(1)
+	}
+	if resp.status_code != 204 && resp.status_code != 200 {
+		println('Error response from shop at sync - statuscode: $resp.status_code - response from shop:')
+		println(resp.text)
+		println('Data send to shop:')
+		println(data)
+		exit(1)
+	}
+	return resp.text
 }

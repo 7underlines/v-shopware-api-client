@@ -56,8 +56,9 @@ pub:
 }
 
 struct Attributes {
-	media_id string [json: mediaId]
 pub:
+	media_id string [json: mediaId]
+	cover_id string [json: coverId]
 	child_count int [json: childCount]
 	stock       int
 	custom_fields map[string]string [json: customFields]

@@ -167,6 +167,10 @@ pub fn (mut l Login) sync(data string) string {
 		println('add single-operation sync header failed')
 		exit(1)
 	}
+	// h.add_custom('indexing-behavior', 'use-queue-indexing') or {
+	// 	println('add indexing-behavior sync header failed')
+	// 	exit(1)
+	// }
 	config := http.FetchConfig{
 		header: h
 		method: .post

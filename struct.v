@@ -62,6 +62,7 @@ pub:
 	child_count int [json: childCount]
 	stock       int
 	custom_fields map[string]string [json: customFields]
+	active bool
 }
 
 struct ErrorDetail {

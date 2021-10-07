@@ -91,3 +91,28 @@ pub fn (mut l Login) find_media_by_name(name string) ?ShopResponseData {
 	}
 	return response.data[0]
 }
+
+pub fn (mut l Login) get_default_tax() string {
+	tax_response := l.get('tax?filter[position]=1')
+	tax_data := json.decode(ShopResponseFind, tax_response) or {
+		println('Failed to decode tax json')
+		exit(1)
+	}
+	// todo if pos 1 not found - get pos 0 or any other
+	// if there are none - create default tax
+	return tax_data.data[0].id
+}
+
+pub fn (mut l Login) get_default_sales_channel() string {
+	sales_channel_type_response := l.get('sales-channel-type?filter[name]=Storefront')
+	sales_channel_type_data := json.decode(ShopResponseFind, sales_channel_type_response) or {
+		println('Failed to decode sales channel type json')
+		exit(1)
+	}
+	sales_channel_response := l.get('sales-channel-type/${sales_channel_type_data.data[0].id}/salesChannels')
+	sales_channel_data := json.decode(ShopResponseFind, sales_channel_response) or {
+		println('Failed to decode sales channel json')
+		exit(1)
+	}
+	return sales_channel_data.data[0].id
+}

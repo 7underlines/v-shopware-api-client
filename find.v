@@ -116,3 +116,12 @@ pub fn (mut l Login) get_default_sales_channel() string {
 	}
 	return sales_channel_data.data[0].id
 }
+
+pub fn (mut l Login) get_default_media_folder() string {
+	response := l.get('media-folder?filter[name]=Imported Media')
+	data := json.decode(ShopResponseFind, response) or {
+		println('Failed to decode response json')
+		exit(1)
+	}
+	return data.data[0].id
+}

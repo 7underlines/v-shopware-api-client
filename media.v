@@ -80,3 +80,33 @@ pub fn (mut l Login) add_media_to_product(media_id string, product_id string, se
 	data_cover := '{"coverId": "$product_media_id"}'
 	l.patch('product/$product_id', data_cover)
 }
+
+// upload_file via binary blob
+pub fn (mut l Login) upload_file(media_id string, name string, _ext string, data string) {
+	l.auth()
+	ext := _ext.replace('.', '')
+	config := http.FetchConfig{
+		header: http.new_header(http.HeaderConfig{
+			key: .content_type
+			value: 'image/$ext'
+		}, http.HeaderConfig{
+			key: .accept
+			value: accept_all
+		}, http.HeaderConfig{
+			key: .authorization
+			value: 'Bearer $l.token.access_token'
+		})
+		method: .post
+		url: l.api_url + '_action/media/$media_id/upload?extension=$ext&fileName=${strip(name)}'
+		data: data
+	}
+	resp := http.fetch(config) or {
+		println('HTTP POST request for file_upload for mediaId $media_id to shop failed - error:')
+		println(err)
+		exit(1)
+	}
+	if resp.status_code != 204 {
+		println('Error response from shop at file_upload for mediaId $media_id statuscode: $resp.status_code - response from shop:')
+		println(resp.text)
+	}
+}

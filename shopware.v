@@ -65,7 +65,7 @@ pub fn (mut l Login) get_raw(endpoint string) http.Response {
 pub fn (mut l Login) post(endpoint string, data string) string {
 	resp := l.fetch(.post, endpoint, data)
 	if resp.status_code != 204 && resp.status_code != 200 {
-		println('Error response from shop at POST - enspoint: $endpoint - statuscode: $resp.status_code - response from shop:')
+		println('Error response from shop at POST - endpoint: $endpoint - statuscode: $resp.status_code - response from shop:')
 		println(resp.text)
 		println('Data send to shop:')
 		println(data)

@@ -2,6 +2,7 @@ module shopwareac
 
 import json
 import os
+import net.http
 
 // upload returns the mediaId of the uploaded file on success
 pub fn (mut l Login) upload(file_url string, name string, media_folder_id string) ?string {

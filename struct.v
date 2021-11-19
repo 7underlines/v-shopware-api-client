@@ -49,6 +49,10 @@ struct ShopResponseError {
 	errors []ErrorDetail
 }
 
+struct ShopResponseSyncError {
+	errors []SyncErrorDetail
+}
+
 pub struct ShopResponseData {
 pub:
 	id         string
@@ -57,12 +61,12 @@ pub:
 
 struct Attributes {
 pub:
-	media_id string [json: mediaId]
-	cover_id string [json: coverId]
-	child_count int [json: childCount]
-	stock       int
+	media_id      string            [json: mediaId]
+	cover_id      string            [json: coverId]
+	child_count   int               [json: childCount]
+	stock         int
 	custom_fields map[string]string [json: customFields]
-	active bool
+	active        bool
 }
 
 struct ErrorDetail {
@@ -70,6 +74,18 @@ struct ErrorDetail {
 	code   string
 	detail string
 	title  string
+}
+
+struct SyncErrorDetail {
+	status string
+	code   string
+	detail string
+	title  string
+	source ErrorDetailSource
+}
+
+struct ErrorDetailSource {
+	pointer string
 }
 
 struct ShopResponseMeta {

@@ -153,16 +153,15 @@ fn (mut l Login) fetch(method http.Method, url string, data string) http.Respons
 pub fn (mut l Login) sync(data string) string {
 	l.auth()
 	mut h := http.new_header(http.HeaderConfig{
-			key: .content_type
-			value: default_content_type
-		}, http.HeaderConfig{
-			key: .accept
-			value: accept_all
-		}, http.HeaderConfig{
-			key: .authorization
-			value: 'Bearer $l.token.access_token'
-		}
-	)
+		key: .content_type
+		value: default_content_type
+	}, http.HeaderConfig{
+		key: .accept
+		value: accept_all
+	}, http.HeaderConfig{
+		key: .authorization
+		value: 'Bearer $l.token.access_token'
+	})
 	h.add_custom('single-operation', '1') or {
 		println('add single-operation sync header failed')
 		exit(1)
@@ -185,8 +184,23 @@ pub fn (mut l Login) sync(data string) string {
 	if resp.status_code != 204 && resp.status_code != 200 {
 		println('Error response from shop at sync - statuscode: $resp.status_code - response from shop:')
 		println(resp.text)
-		println('Data send to shop:')
-		println(data)
+		if resp.text.contains('"source":{"pointer":') {
+			e := json.decode(ShopResponseSyncError, resp.text) or {
+				println("Can't json decode shop error response")
+				println('Data send to shop:')
+				println(data)
+				exit(1)
+			}
+			println('Data send to shop:')
+			println(data)
+			println('Error source pointer:')
+			println(e.errors[0].source.pointer)
+			// idea: get the number of the record and print out exactly the specifc payload
+			exit(1)
+		} else {
+			println('Data send to shop:')
+			println(data)
+		}
 		exit(1)
 	}
 	return resp.text

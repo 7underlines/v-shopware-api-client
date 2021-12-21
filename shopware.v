@@ -189,29 +189,29 @@ pub fn (mut l Login) sync(data string) string {
 		println('Error response from shop at sync - statuscode: $resp.status_code - response from shop:')
 		if resp.text.contains('"source":{"pointer":') {
 			e := json.decode(ShopResponseSyncError, resp.text) or {
-				println("Can't json decode shop error response")
-				println('Data send to shop:')
-				println(data)
+				println("Can't json decode shop error response: " + resp.text)
+				println('Data send to shop: $data')
 				exit(1)
 			}
 			println(e)
-			error_source_array := e.errors[0].source.pointer.split('/')
-			if error_source_array.len > 1 {
-				error_item_nr := error_source_array[2]
-			}
 			pos := data[1..].index('{') or { -1 }
 			if pos > -1 {
 				payload := json.decode(SyncPayload, data[pos..data.len - 1]) or {
-					println("Can't json decode sync payload")
+					// println("Can't json decode sync payload")
 					SyncPayload{}
 				}
-				println(payload.payload[error_item_nr.int()]) // todo - figure out why this doesn't print nested vars
-			} else {
-				println('Data send to shop:')
-				println(data)
+				error_source_array := e.errors[0].source.pointer.split('/')
+				if error_source_array.len > 1 {
+					error_item_nr := error_source_array[2]
+					println('Error record:')
+					println(payload.payload[error_item_nr.int()]) // todo - figure out why this doesn't print nested vars
+				} else {
+					println('Data send to shop: $data')
+				}
 			}
 		} else {
 			println(resp.text)
+			println('Data send to shop: $data')
 		}
 		exit(1)
 	}

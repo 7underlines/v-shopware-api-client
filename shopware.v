@@ -3,6 +3,7 @@ module shopwareac
 import net.http
 import time
 import json
+import os
 
 // auth get's called automatic and renews the oauth token if needed
 pub fn (mut l Login) auth() {
@@ -176,6 +177,9 @@ pub fn (mut l Login) sync(data string) string {
 		url: l.api_url + '_action/sync'
 		data: data
 	}
+	os.write_file(@FILE + '_api_retry_cache.json', data) or {
+		println('unable to create last sync log file - reason: ' + err.str())
+	}
 	resp := http.fetch(config) or {
 		println('Unable to make HTTP sync request to shop')
 		println(err)
@@ -183,7 +187,6 @@ pub fn (mut l Login) sync(data string) string {
 	}
 	if resp.status_code != 204 && resp.status_code != 200 {
 		println('Error response from shop at sync - statuscode: $resp.status_code - response from shop:')
-		println(resp.text)
 		if resp.text.contains('"source":{"pointer":') {
 			e := json.decode(ShopResponseSyncError, resp.text) or {
 				println("Can't json decode shop error response")
@@ -191,17 +194,33 @@ pub fn (mut l Login) sync(data string) string {
 				println(data)
 				exit(1)
 			}
-			println('Data send to shop:')
-			println(data)
-			println('Error source pointer:')
-			println(e.errors[0].source.pointer)
-			// idea: get the number of the record and print out exactly the specifc payload
-			exit(1)
+			println(e)
+			error_source_array := e.errors[0].source.pointer.split('/')
+			if error_source_array.len > 1 {
+				error_item_nr := error_source_array[2]
+			}
+			pos := data[1..].index('{') or { -1 }
+			if pos > -1 {
+				payload := json.decode(SyncPayload, data[pos..data.len - 1]) or {
+					println("Can't json decode sync payload")
+					SyncPayload{}
+				}
+				println(payload.payload[error_item_nr.int()]) // todo - figure out why this doesn't print nested vars
+			} else {
+				println('Data send to shop:')
+				println(data)
+			}
 		} else {
-			println('Data send to shop:')
-			println(data)
+			println(resp.text)
 		}
 		exit(1)
 	}
 	return resp.text
+}
+
+// resend_sync sends the last sync operation (sync saves data into a file) again to the shop api - useful for debugging or temporary errors
+pub fn (mut l Login) resend_sync() {
+	data := os.read_file(@FILE + '_api_retry_cache.json') or { return }
+	l.auth()
+	l.sync(data)
 }

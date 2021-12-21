@@ -81,7 +81,13 @@ struct SyncErrorDetail {
 	code   string
 	detail string
 	title  string
+	// source map[string]string
 	source ErrorDetailSource
+	meta   SyncErrorDetailMeta
+}
+
+struct SyncErrorDetailMeta {
+	parameters map[string]string
 }
 
 struct ErrorDetailSource {
@@ -90,4 +96,8 @@ struct ErrorDetailSource {
 
 struct ShopResponseMeta {
 	total int
+}
+
+struct SyncPayload {
+	payload []map[string]string
 }

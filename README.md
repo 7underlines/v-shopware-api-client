@@ -107,11 +107,17 @@ fn main() {
   - [find_property_by_name](#find_property_by_name)
   - [find_subcategory_by_name](#find_subcategory_by_name)
   - [get](#get)
+  - [get_default_media_folder](#get_default_media_folder)
+  - [get_default_sales_channel](#get_default_sales_channel)
+  - [get_default_tax](#get_default_tax)
   - [get_raw](#get_raw)
   - [patch](#patch)
   - [post](#post)
+  - [resend_sync](#resend_sync)
   - [sync](#sync)
+  - [update_media_from_url](#update_media_from_url)
   - [upload](#upload)
+  - [upload_file](#upload_file)
 - [ShopResponseData](#ShopResponseData)
 
 ## encode
@@ -229,6 +235,30 @@ fn (mut l Login) get(endpoint string) string
 
 [[Return to contents]](#Contents)
 
+## get_default_media_folder
+```v
+fn (mut l Login) get_default_media_folder() string
+```
+
+
+[[Return to contents]](#Contents)
+
+## get_default_sales_channel
+```v
+fn (mut l Login) get_default_sales_channel() string
+```
+
+
+[[Return to contents]](#Contents)
+
+## get_default_tax
+```v
+fn (mut l Login) get_default_tax() string
+```
+
+
+[[Return to contents]](#Contents)
+
 ## get_raw
 ```v
 fn (mut l Login) get_raw(endpoint string) http.Response
@@ -254,6 +284,15 @@ post returns the id of the created content on success
 
 [[Return to contents]](#Contents)
 
+## resend_sync
+```v
+fn (mut l Login) resend_sync()
+```
+
+resend_sync sends the last sync operation (sync saves data into a file) again to the shop api - useful for debugging or temporary errors
+
+[[Return to contents]](#Contents)
+
 ## sync
 ```v
 fn (mut l Login) sync(data string) string
@@ -263,12 +302,30 @@ sync API is an add-on to the Admin API that allows you to perform multiple write
 
 [[Return to contents]](#Contents)
 
+## update_media_from_url
+```v
+fn (mut l Login) update_media_from_url(media_id string, url string)
+```
+
+Attach resource data to the media object from the given url
+
+[[Return to contents]](#Contents)
+
 ## upload
 ```v
 fn (mut l Login) upload(file_url string, name string, media_folder_id string) ?string
 ```
 
 upload returns the mediaId of the uploaded file on success
+
+[[Return to contents]](#Contents)
+
+## upload_file
+```v
+fn (mut l Login) upload_file(media_id string, name string, _ext string, data string)
+```
+
+upload_file via binary blob
 
 [[Return to contents]](#Contents)
 
@@ -284,7 +341,11 @@ pub:
 
 [[Return to contents]](#Contents)
 
-#### Powered by vdoc. Generated on: 24 Sep 2021 11:02:35
+#### Powered by vdoc. Generated on: 5 Jan 2022 14:28:20
+
+```bash
+v doc -f md .
+```
 
 ## License
 [AGPL-3.0](LICENSE)

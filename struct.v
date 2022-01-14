@@ -61,12 +61,13 @@ pub:
 
 struct Attributes {
 pub:
-	media_id      string            [json: mediaId]
-	cover_id      string            [json: coverId]
-	child_count   int               [json: childCount]
-	stock         int
-	custom_fields map[string]string [json: customFields]
-	active        bool
+	media_id       string            [json: mediaId]
+	cover_id       string            [json: coverId]
+	child_count    int               [json: childCount]
+	stock          int
+	custom_fields  map[string]string [json: customFields]
+	active         bool
+	product_number string            [json: productNumber]
 }
 
 struct ErrorDetail {

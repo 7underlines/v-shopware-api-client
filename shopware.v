@@ -220,12 +220,8 @@ pub fn (mut l Login) sync(data string) string {
 
 // sync_upsert is a shorthand function for sync
 pub fn (mut l Login) sync_upsert(entity string, data []string) string {
-	sync_data := '{"v-sync-upsert-$entity": {
-		"entity": "$entity",
-		"action": "upsert",
-		"payload": [' +
-		data.join(',') + ']
-	}}'
+	sync_data := '{"v-sync-$entity":{"entity":"$entity","action":"upsert","payload":[' +
+		data.join(',') + ']}}'
 	return l.sync(sync_data)
 }
 

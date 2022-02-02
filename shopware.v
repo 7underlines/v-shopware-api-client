@@ -196,7 +196,7 @@ pub fn (mut l Login) sync(data string) string {
 			println(e)
 			pos := data[1..].index('{') or { -1 }
 			if pos > -1 {
-				payload := json.decode(SyncPayload, data[pos+1..data.len - 1]) or {
+				payload := json.decode(SyncPayload, data[pos + 1..data.len - 1]) or {
 					// println("Can't json decode sync payload")
 					SyncPayload{}
 				}
@@ -216,6 +216,17 @@ pub fn (mut l Login) sync(data string) string {
 		exit(1)
 	}
 	return resp.text
+}
+
+// sync_upsert is a shorthand function for sync
+pub fn (mut l Login) sync_upsert(entity string, data []string) string {
+	sync_data := '{"v-sync-upset-$entity": {
+		"entity": "property_group",
+		"action": "upsert",
+		"payload": [' +
+		data.join(',') + ']
+	}}'
+	return l.sync(sync_data)
 }
 
 // resend_sync sends the last sync operation (sync saves data into a file) again to the shop api - useful for debugging or temporary errors

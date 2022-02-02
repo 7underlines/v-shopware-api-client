@@ -220,13 +220,19 @@ pub fn (mut l Login) sync(data string) string {
 
 // sync_upsert is a shorthand function for sync
 pub fn (mut l Login) sync_upsert(entity string, data []string) string {
-	sync_data := '{"v-sync-upset-$entity": {
-		"entity": "property_group",
+	sync_data := '{"v-sync-upsert-$entity": {
+		"entity": "$entity",
 		"action": "upsert",
 		"payload": [' +
 		data.join(',') + ']
 	}}'
 	return l.sync(sync_data)
+}
+
+// get_last_sync returns the last sync payload
+pub fn (mut l Login) get_last_sync() string {
+	data := os.read_file(@FILE + '_api_retry_cache.json') or { return '' }
+	return data
 }
 
 // resend_sync sends the last sync operation (sync saves data into a file) again to the shop api - useful for debugging or temporary errors

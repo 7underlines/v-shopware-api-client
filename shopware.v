@@ -196,12 +196,12 @@ pub fn (mut l Login) sync(data string) string {
 			println(e)
 			pos := data[1..].index('{') or { -1 }
 			if pos > -1 {
-				payload := json.decode(SyncPayload, data[pos..data.len - 1]) or {
+				payload := json.decode(SyncPayload, data[pos+1..data.len - 1]) or {
 					// println("Can't json decode sync payload")
 					SyncPayload{}
 				}
 				error_source_array := e.errors[0].source.pointer.split('/')
-				if error_source_array.len > 1 {
+				if error_source_array.len > 1 && payload.payload.len > 0 {
 					error_item_nr := error_source_array[2]
 					println('Error record:')
 					println(payload.payload[error_item_nr.int()]) // todo - figure out why this doesn't print nested vars

@@ -4,6 +4,7 @@ import net.http
 import time
 import json
 import os
+import arrays
 
 // auth get's called automatic and renews the oauth token if needed
 pub fn (mut l Login) auth() {
@@ -218,11 +219,16 @@ pub fn (mut l Login) sync(data string) string {
 	return resp.text
 }
 
-// sync_upsert is a shorthand function for sync
+// sync_upsert is a shorthand function for sync with data chunking for large arrays
 pub fn (mut l Login) sync_upsert(entity string, data []string) string {
-	sync_data := '{"v-sync-$entity":{"entity":"$entity","action":"upsert","payload":[' +
-		data.join(',') + ']}}'
-	return l.sync(sync_data)
+	mut responses := ''
+	chunks := arrays.chunk(data, 500) // split into chunks
+	for chunk in chunks {
+		sync_data := '{"v-sync-$entity":{"entity":"$entity","action":"upsert","payload":[' +
+			chunk.join(',') + ']}}'
+		responses += l.sync(sync_data)
+	}
+	return responses
 }
 
 // get_last_sync returns the last sync payload

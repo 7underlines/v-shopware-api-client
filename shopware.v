@@ -144,11 +144,19 @@ fn (mut l Login) fetch(method http.Method, url string, data string) http.Respons
 		data: data
 	} // http.fetch(http.FetchConfig{ ...config, url: '' })
 	resp := http.fetch(config) or {
-		println('HTTP $method request to shop failed - url: $l.api_url$url - error:')
-		println(err)
+		eprintln('HTTP $method request to shop failed - url: $l.api_url$url - error:')
+		eprintln(err)
+		http.Response{}
+	}
+	if resp.status_code != 0 {
+		return resp
+	}
+	println('Retry')
+	resp2 := http.fetch(config) or {
+		println('Retry failed again')
 		exit(1)
 	}
-	return resp
+	return resp2
 }
 
 // sync API is an add-on to the Admin API that allows you to perform multiple write operations (creating/updating and deleting) simultaneously

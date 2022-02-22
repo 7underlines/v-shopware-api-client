@@ -128,7 +128,11 @@ pub fn (mut l Login) delete(endpoint string, id string) {
 
 fn (mut l Login) fetch(method http.Method, url string, data string) http.Response {
 	l.auth()
-	config := http.FetchConfig{
+	request := http.Request{
+		method: method
+		url: l.api_url + url
+		data: data
+		read_timeout: 120 * time.minute // -1 for no timeout somehow does not work
 		header: http.new_header(http.HeaderConfig{
 			key: .content_type
 			value: default_content_type
@@ -139,11 +143,8 @@ fn (mut l Login) fetch(method http.Method, url string, data string) http.Respons
 			key: .authorization
 			value: 'Bearer $l.token.access_token'
 		})
-		method: method
-		url: l.api_url + url
-		data: data
-	} // http.fetch(http.FetchConfig{ ...config, url: '' })
-	resp := http.fetch(config) or {
+	}
+	resp := request.do() or {
 		eprintln('HTTP $method request to shop failed - url: $l.api_url$url - error:')
 		eprintln(err)
 		http.Response{}
@@ -152,7 +153,7 @@ fn (mut l Login) fetch(method http.Method, url string, data string) http.Respons
 		return resp
 	}
 	println('Retry')
-	resp2 := http.fetch(config) or {
+	resp2 := request.do() or {
 		println('Retry failed again')
 		exit(1)
 	}

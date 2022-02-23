@@ -181,16 +181,17 @@ pub fn (mut l Login) sync(data string) string {
 	// 	println('add indexing-behavior sync header failed')
 	// 	exit(1)
 	// }
-	config := http.FetchConfig{
-		header: h
+	request := http.Request{
 		method: .post
 		url: l.api_url + '_action/sync'
 		data: data
+		read_timeout: 120 * time.minute // -1 for no timeout somehow does not work
+		header: h
 	}
 	os.write_file(@FILE + '_api_retry_cache.json', data) or {
 		println('unable to create last sync log file - reason: ' + err.str())
 	}
-	resp := http.fetch(config) or {
+	resp := request.do() or {
 		println('Unable to make HTTP sync request to shop')
 		println(err)
 		exit(1)

@@ -110,11 +110,14 @@ fn main() {
   - [get_default_media_folder](#get_default_media_folder)
   - [get_default_sales_channel](#get_default_sales_channel)
   - [get_default_tax](#get_default_tax)
+  - [get_last_sync](#get_last_sync)
   - [get_raw](#get_raw)
   - [patch](#patch)
   - [post](#post)
   - [resend_sync](#resend_sync)
   - [sync](#sync)
+  - [sync_delete](#sync_delete)
+  - [sync_upsert](#sync_upsert)
   - [update_media_from_url](#update_media_from_url)
   - [upload](#upload)
   - [upload_file](#upload_file)
@@ -259,6 +262,15 @@ fn (mut l Login) get_default_tax() string
 
 [[Return to contents]](#Contents)
 
+## get_last_sync
+```v
+fn (mut l Login) get_last_sync() string
+```
+
+get_last_sync returns the last sync payload
+
+[[Return to contents]](#Contents)
+
 ## get_raw
 ```v
 fn (mut l Login) get_raw(endpoint string) http.Response
@@ -302,6 +314,24 @@ sync API is an add-on to the Admin API that allows you to perform multiple write
 
 [[Return to contents]](#Contents)
 
+## sync_delete
+```v
+fn (mut l Login) sync_delete(entity string, data []string) string
+```
+
+sync_delete is a shorthand function for sync with data chunking for large arrays
+
+[[Return to contents]](#Contents)
+
+## sync_upsert
+```v
+fn (mut l Login) sync_upsert(entity string, data []string) string
+```
+
+sync_upsert is a shorthand function for sync with data chunking for large arrays
+
+[[Return to contents]](#Contents)
+
 ## update_media_from_url
 ```v
 fn (mut l Login) update_media_from_url(media_id string, url string)
@@ -341,7 +371,7 @@ pub:
 
 [[Return to contents]](#Contents)
 
-#### Powered by vdoc. Generated on: 5 Jan 2022 14:28:20
+#### Powered by vdoc. Generated on: 23 Feb 2022 16:27:56
 
 ```bash
 v doc -f md .

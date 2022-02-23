@@ -242,6 +242,19 @@ pub fn (mut l Login) sync_upsert(entity string, data []string) string {
 	return responses
 }
 
+// sync_delete is a shorthand function for sync with data chunking for large arrays
+pub fn (mut l Login) sync_delete(entity string, data []string) string {
+	mut responses := ''
+	chunks := arrays.chunk(data, 400) // split into chunks
+	for chunk in chunks {
+		c := chunk.filter(it != '')
+		sync_data := '{"v-sync-$entity":{"entity":"$entity","action":"delete","payload":[' +
+			c.join(',') + ']}}'
+		responses += l.sync(sync_data)
+	}
+	return responses
+}
+
 // get_last_sync returns the last sync payload
 pub fn (mut l Login) get_last_sync() string {
 	data := os.read_file(@FILE + '_api_retry_cache.json') or { return '' }

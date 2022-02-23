@@ -201,7 +201,7 @@ pub fn (mut l Login) sync(data string) string {
 		if resp.text.contains('"source":{"pointer":') {
 			e := json.decode(ShopResponseSyncError, resp.text) or {
 				println("Can't json decode shop error response: " + resp.text)
-				println('Data send to shop: $data')
+				// println('Data send to shop: $data')
 				exit(1)
 			}
 			println(e)
@@ -217,12 +217,12 @@ pub fn (mut l Login) sync(data string) string {
 					println('Error record:')
 					println(payload.payload[error_item_nr.int()]) // todo - figure out why this doesn't print nested vars
 				} else {
-					println('Data send to shop: $data')
+					// println('Data send to shop: $data')
 				}
 			}
 		} else {
 			println(resp.text)
-			println('Data send to shop: $data')
+			// println('Data send to shop: $data')
 		}
 		exit(1)
 	}

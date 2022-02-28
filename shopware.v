@@ -40,17 +40,16 @@ pub fn (mut l Login) auth() {
 	resp := http.fetch(config) or {
 		println('HTTP POST request to auth at shop failed - url: $url - error:')
 		println(err)
-		exit(1)
+		http.Response{}
 	}
 	if resp.status_code != 200 {
 		println('Shop auth failed - statuscode: $resp.status_code - response from shop:')
 		println(resp.text)
-		exit(1)
 	}
 	token := json.decode(AuthToken, resp.text) or {
 		println("Can't json decode shop auth token - response from shop:")
 		println(resp.text)
-		exit(1)
+		AuthToken{}
 	}
 	l.token = token
 	l.token.request_at = tu
@@ -62,7 +61,7 @@ pub fn (mut l Login) get(endpoint string) string {
 	if resp.status_code != 200 {
 		println('Problem at fetching data from shop at $endpoint - statuscode: $resp.status_code - response from shop:')
 		println(resp.text)
-		exit(1)
+		// exit(1)
 	}
 	return resp.text
 }
@@ -136,6 +135,9 @@ pub fn (mut l Login) delete(endpoint string, id string) {
 
 fn (mut l Login) fetch(method http.Method, url string, data string) http.Response {
 	l.auth()
+	if l.token.access_token == '' {
+		return http.Response{}
+	}
 	request := http.Request{
 		method: method
 		url: l.api_url + url

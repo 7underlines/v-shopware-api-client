@@ -13,7 +13,15 @@ pub fn (mut l Login) auth() {
 	if l.token.valid_until > tu { // token is still valid, no need to get a new one
 		return
 	}
-
+	if l.api_url.len < 2 {
+		return	
+	}
+	if l.api_url[..l.api_url.len-1] != '/' {
+		l.api_url += '/'
+	}
+	if !l.api_url.contains('api') {
+		l.api_url += 'api/'
+	}
 	url := l.api_url + 'oauth/token'
 
 	config := http.FetchConfig{

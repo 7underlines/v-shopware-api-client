@@ -93,6 +93,10 @@ pub fn (mut l Login) post(endpoint string, data string) string {
 	}
 }
 
+pub fn (mut l Login) search(entity string, data string) string {
+	return l.post('search/$entity', data)
+}
+
 pub fn (mut l Login) patch(endpoint string, data string) {
 	resp := l.fetch(.patch, endpoint, data)
 	if resp.status_code != 204 {

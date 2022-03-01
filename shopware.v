@@ -78,7 +78,7 @@ pub fn (mut l Login) post(endpoint string, data string) string {
 		println(resp.text)
 		println('Data send to shop:')
 		println(data)
-		exit(1)
+		// exit(1)
 	}
 	if resp.status_code == 204 {
 		location := resp.header.get(.location) or { '' }

@@ -16,7 +16,7 @@ pub fn (mut l Login) auth() {
 	if l.api_url.len < 2 {
 		return	
 	}
-	if l.api_url[..l.api_url.len-1] != '/' {
+	if l.api_url[l.api_url.len-1..] != '/' {
 		l.api_url += '/'
 	}
 	if !l.api_url.contains('api') {

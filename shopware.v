@@ -7,14 +7,14 @@ import os
 import arrays
 
 // auth get's called automatic and renews the oauth token if needed
-pub fn (mut l Login) auth() {
+pub fn (mut l Login) auth() bool {
 	t := time.now()
 	tu := t.unix_time()
 	if l.token.valid_until > tu { // token is still valid, no need to get a new one
-		return
+		return true
 	}
 	if l.api_url.len < 2 {
-		return	
+		return false
 	}
 	if l.api_url[l.api_url.len-1..] != '/' {
 		l.api_url += '/'
@@ -54,6 +54,10 @@ pub fn (mut l Login) auth() {
 	l.token = token
 	l.token.request_at = tu
 	l.token.valid_until = tu + token.expires_in - 50 // -50 is a buffer just to be safe
+	if l.token.access_token != '' {
+		return true
+	}
+	return false
 }
 
 pub fn (mut l Login) get(endpoint string) string {

@@ -10,7 +10,7 @@ Shopware Admin API credentials can be generated in the shopware backend (Setting
 
 [Shopware 6 Developer Documentation](http://developer.shopware.com/)
 
-I recommend to configure the api credentials via .env - take a look at my [dotenv module](https://github.com/treffner/vdotenv).
+I recommend to configure the api credentials via .env - take a look at my [dotenv module](https://github.com/thomaspeissl/vdotenv).
 
 ## Features
 
@@ -48,7 +48,7 @@ v install treffner.shopwareac
 
 ### Or through Git:
 ```shell
-git clone https://github.com/treffner/v-shopware-api-client.git ~/.vmodules/treffner/shopwareac
+git clone https://github.com/thomaspeissl/v-shopware-api-client.git ~/.vmodules/treffner/shopwareac
 ```
 
 ## Running the examples

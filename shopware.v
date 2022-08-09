@@ -44,11 +44,11 @@ pub fn (mut l Login) auth() bool {
 	}
 	if resp.status_code != 200 {
 		println('Shop auth failed - statuscode: $resp.status_code - response from shop:')
-		println(resp.text)
+		println(resp.body)
 	}
-	token := json.decode(AuthToken, resp.text) or {
+	token := json.decode(AuthToken, resp.body) or {
 		println("Can't json decode shop auth token - response from shop:")
-		println(resp.text)
+		println(resp.body)
 		AuthToken{}
 	}
 	l.token = token
@@ -64,10 +64,10 @@ pub fn (mut l Login) get(endpoint string) string {
 	resp := l.fetch(.get, endpoint, '')
 	if resp.status_code != 200 {
 		println('Problem at fetching data from shop at $endpoint - statuscode: $resp.status_code - response from shop:')
-		println(resp.text)
+		println(resp.body)
 		// exit(1)
 	}
-	return resp.text
+	return resp.body
 }
 
 pub fn (mut l Login) get_raw(endpoint string) http.Response {
@@ -79,7 +79,7 @@ pub fn (mut l Login) post(endpoint string, data string) string {
 	resp := l.fetch(.post, endpoint, data)
 	if resp.status_code != 204 && resp.status_code != 200 {
 		println('Error response from shop at POST - endpoint: $endpoint - statuscode: $resp.status_code - response from shop:')
-		println(resp.text)
+		println(resp.body)
 		println('Data send to shop:')
 		println(data)
 		// exit(1)
@@ -90,10 +90,10 @@ pub fn (mut l Login) post(endpoint string, data string) string {
 			pos := location.last_index('/') or { -1 }
 			return location[pos + 1..]
 		} else {
-			return resp.text
+			return resp.body
 		}
 	} else {
-		return resp.text
+		return resp.body
 	}
 }
 
@@ -105,11 +105,11 @@ pub fn (mut l Login) patch(endpoint string, data string) {
 	resp := l.fetch(.patch, endpoint, data)
 	if resp.status_code != 204 {
 		println('Error response from shop at PATCH - endpoint: $endpoint - statuscode: $resp.status_code - response from shop:')
-		println(resp.text)
+		println(resp.body)
 		println('Data send to shop:')
 		println(data)
 		if resp.status_code == 500 {
-			// if resp.text.contains('FRAMEWORK__WRITE_TYPE_INTEND_ERROR') { // try again on this error
+			// if resp.body.contains('FRAMEWORK__WRITE_TYPE_INTEND_ERROR') { // try again on this error
 			// 	println('trying again ...')
 			// 	time.sleep_ms(2000)
 			// 	resp2 := http.fetch(url, config) or {
@@ -119,7 +119,7 @@ pub fn (mut l Login) patch(endpoint string, data string) {
 			// 	}
 			// 	if resp2.status_code != 204 {
 			println('Error response from shop at PATCH - endpoint: $endpoint - statuscode: $resp.status_code - response from shop:')
-			println(resp.text)
+			println(resp.body)
 			println('Data send to shop:')
 			println(data)
 			exit(1)
@@ -136,7 +136,7 @@ pub fn (mut l Login) delete(endpoint string, id string) {
 	resp := l.fetch(.delete, url, '')
 	if resp.status_code != 204 {
 		println('Error response from shop at DELETE - url: $url - statuscode: $resp.status_code - response from shop:')
-		println(resp.text)
+		println(resp.body)
 		exit(1)
 	}
 }
@@ -216,9 +216,9 @@ pub fn (mut l Login) sync(data string) string {
 	}
 	if resp.status_code != 204 && resp.status_code != 200 {
 		println('Error response from shop at sync - statuscode: $resp.status_code - response from shop:')
-		if resp.text.contains('"source":{"pointer":') {
-			e := json.decode(ShopResponseSyncError, resp.text) or {
-				println("Can't json decode shop error response: " + resp.text)
+		if resp.body.contains('"source":{"pointer":') {
+			e := json.decode(ShopResponseSyncError, resp.body) or {
+				println("Can't json decode shop error response: " + resp.body)
 				// println('Data send to shop: $data')
 				exit(1)
 			}
@@ -239,12 +239,12 @@ pub fn (mut l Login) sync(data string) string {
 				}
 			}
 		} else {
-			println(resp.text)
+			println(resp.body)
 			// println('Data send to shop: $data')
 		}
 		exit(1)
 	}
-	return resp.text
+	return resp.body
 }
 
 // sync_upsert is a shorthand function for sync with data chunking for large arrays

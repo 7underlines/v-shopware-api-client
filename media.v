@@ -19,9 +19,9 @@ pub fn (mut l Login) upload(file_url string, name string, media_folder_id string
 	url := '_action/media/$shopres.data.id/upload?extension=$ext2&fileName=${strip(name)}'
 	resp := l.fetch(.post, url, data2)
 	if resp.status_code == 500 {
-		shopr := json.decode(ShopResponseError, resp.text) or {
+		shopr := json.decode(ShopResponseError, resp.body) or {
 			println("Can't json decode shop response - response from shop:")
-			println(resp.text)
+			println(resp.body)
 			exit(1)
 		}
 		for e in shopr.errors {
@@ -33,7 +33,7 @@ pub fn (mut l Login) upload(file_url string, name string, media_folder_id string
 	}
 	if resp.status_code != 204 && resp.status_code != 200 {
 		println('Error response from shop at POST - url: $url - statuscode: $resp.status_code - response from shop:')
-		println(resp.text)
+		println(resp.body)
 		println('Data send to shop:')
 		println(data)
 		exit(1)
@@ -44,10 +44,10 @@ pub fn (mut l Login) upload(file_url string, name string, media_folder_id string
 			pos := location.last_index('/') or { -1 }
 			return location[pos + 1..]
 		} else {
-			return resp.text
+			return resp.body
 		}
 	} else {
-		return resp.text
+		return resp.body
 	}
 }
 
@@ -108,7 +108,7 @@ pub fn (mut l Login) upload_file(media_id string, name string, _ext string, data
 	}
 	if resp.status_code != 204 {
 		println('Error response from shop at file_upload for mediaId $media_id statuscode: $resp.status_code - response from shop:')
-		println(resp.text)
+		println(resp.body)
 	}
 }
 
@@ -122,6 +122,6 @@ pub fn (mut l Login) update_media_from_url(media_id string, url string) {
 		'')}&fileName=${strip(filename_without_ext)}', '{"url":"$url"}')
 	if resp.status_code != 204 {
 		println('Error response from shop at file_upload for mediaId $media_id - url $url - statuscode $resp.status_code - response from shop:')
-		println(resp.text)
+		println(resp.body)
 	}
 }

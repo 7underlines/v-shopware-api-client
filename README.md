@@ -112,6 +112,7 @@ fn main() {
   - [patch](#patch)
   - [post](#post)
   - [resend_sync](#resend_sync)
+  - [search](#search)
   - [sync](#sync)
   - [sync_delete](#sync_delete)
   - [sync_upsert](#sync_upsert)
@@ -144,9 +145,10 @@ struct Login {
 mut:
 	token AuthToken
 pub:
-	api_url       string
 	client_id     string
 	client_secret string
+pub mut:
+	api_url string
 }
 ```
 
@@ -164,7 +166,7 @@ add_media_to_product position should begin with 0
 
 ## auth
 ```v
-fn (mut l Login) auth()
+fn (mut l Login) auth() bool
 ```
 
 auth get's called automatic and renews the oauth token if needed
@@ -302,6 +304,14 @@ resend_sync sends the last sync operation (sync saves data into a file) again to
 
 [[Return to contents]](#Contents)
 
+## search
+```v
+fn (mut l Login) search(entity string, data string) string
+```
+
+
+[[Return to contents]](#Contents)
+
 ## sync
 ```v
 fn (mut l Login) sync(data string) string
@@ -349,7 +359,7 @@ upload returns the mediaId of the uploaded file on success
 
 ## upload_file
 ```v
-fn (mut l Login) upload_file(media_id string, name string, _ext string, data string)
+fn (mut l Login) upload_file(media_id string, name string, _ext string, data string) ?
 ```
 
 upload_file via binary blob
@@ -368,7 +378,7 @@ pub:
 
 [[Return to contents]](#Contents)
 
-#### Powered by vdoc. Generated on: 23 Feb 2022 16:27:56
+#### Powered by vdoc. Generated on: 17 Aug 2022 12:06:22
 
 ```bash
 v doc -f md .

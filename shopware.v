@@ -61,11 +61,15 @@ pub fn (mut l Login) auth() bool {
 }
 
 pub fn (mut l Login) get(endpoint string) string {
-	resp := l.fetch(.get, endpoint, '')
+	mut resp := l.fetch(.get, endpoint, '')
 	if resp.status_code != 200 {
 		println('Problem at fetching data from shop at $endpoint - statuscode: $resp.status_code - response from shop:')
 		println(resp.body)
-		// exit(1)
+		println('Retry')
+		resp = l.fetch(.get, endpoint, '')
+		if resp.status_code != 200 {
+			println('Also error on retry')
+		}
 	}
 	return resp.body
 }

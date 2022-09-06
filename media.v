@@ -5,6 +5,7 @@ import os
 import net.http
 
 // upload returns the mediaId of the uploaded file on success
+[inline]
 pub fn (mut l Login) upload(file_url string, name string, media_folder_id string) ?string {
 	data := '{"mediaFolderId": "$media_folder_id"}'
 	resp2 := l.post('media?_response=true', data)
@@ -52,6 +53,7 @@ pub fn (mut l Login) upload(file_url string, name string, media_folder_id string
 }
 
 // add_media_to_product position should begin with 0
+[inline]
 pub fn (mut l Login) add_media_to_product(media_id string, product_id string, set_as_cover bool, position int) { // position should begin with 0
 	mut product_media_id := ''
 	data_product := '{"media":[{"mediaId":"$media_id", "position": $position}]}'
@@ -83,6 +85,7 @@ pub fn (mut l Login) add_media_to_product(media_id string, product_id string, se
 }
 
 // upload_file via binary blob
+[inline]
 pub fn (mut l Login) upload_file(media_id string, name string, _ext string, data string) ? {
 	l.auth()
 	ext := _ext.replace('.', '')
@@ -110,6 +113,7 @@ pub fn (mut l Login) upload_file(media_id string, name string, _ext string, data
 }
 
 // Attach resource data to the media object from the given url
+[inline]
 pub fn (mut l Login) update_media_from_url(media_id string, url string) {
 	l.auth()
 	name := os.file_name(url)

@@ -3,6 +3,7 @@ module shopwareac
 import json
 import os
 
+[inline]
 pub fn (mut l Login) find_product_by_productnumber(productnumber string) ?ShopResponseData {
 	response_raw := l.get('product/?filter[productNumber]=${encode(productnumber)}')
 	response := json.decode(ShopResponseFind, response_raw) or {
@@ -17,6 +18,7 @@ pub fn (mut l Login) find_product_by_productnumber(productnumber string) ?ShopRe
 	return response.data[0]
 }
 
+[inline]
 pub fn (mut l Login) find_product_by_customfield(field string, value string) ?ShopResponseData {
 	response_raw := l.get('product/?filter[customFields.$field]=${encode(value)}')
 	response := json.decode(ShopResponseFind, response_raw) or {
@@ -31,6 +33,7 @@ pub fn (mut l Login) find_product_by_customfield(field string, value string) ?Sh
 	return response.data[0]
 }
 
+[inline]
 pub fn (mut l Login) find_category_by_customfield(field string, value string) ?ShopResponseData {
 	response_raw := l.get('category/?filter[customFields.$field]=${encode(value)}')
 	response := json.decode(ShopResponseFind, response_raw) or {
@@ -45,6 +48,7 @@ pub fn (mut l Login) find_category_by_customfield(field string, value string) ?S
 	return response.data[0]
 }
 
+[inline]
 pub fn (mut l Login) find_subcategory_by_name(name string, parent string) ?ShopResponseData {
 	response_raw := l.get('category/?filter[name]=${encode(name)}&filter[parentId]=$parent')
 	response := json.decode(ShopResponseFind, response_raw) or {
@@ -59,6 +63,7 @@ pub fn (mut l Login) find_subcategory_by_name(name string, parent string) ?ShopR
 	return response.data[0]
 }
 
+[inline]
 pub fn (mut l Login) find_property_by_name(name string, group string) ?ShopResponseData {
 	response_raw := l.get('property-group-option/?filter[name]=${encode(name)}&filter[groupId]=$group')
 	response := json.decode(ShopResponseFind, response_raw) or {
@@ -73,6 +78,7 @@ pub fn (mut l Login) find_property_by_name(name string, group string) ?ShopRespo
 	return response.data[0]
 }
 
+[inline]
 pub fn (mut l Login) find_media_by_name(name string) ?ShopResponseData {
 	mut ext := os.file_ext(name)
 	name_without_ext := name.substr(0, name.len - ext.len)
@@ -92,6 +98,7 @@ pub fn (mut l Login) find_media_by_name(name string) ?ShopResponseData {
 	return response.data[0]
 }
 
+[inline]
 pub fn (mut l Login) get_default_tax() string {
 	tax_response := l.get('tax?filter[position]=1')
 	tax_data := json.decode(ShopResponseFind, tax_response) or {
@@ -103,6 +110,7 @@ pub fn (mut l Login) get_default_tax() string {
 	return tax_data.data[0].id
 }
 
+[inline]
 pub fn (mut l Login) get_default_sales_channel() string {
 	sales_channel_type_response := l.get('sales-channel-type?filter[name]=Storefront')
 	sales_channel_type_data := json.decode(ShopResponseFind, sales_channel_type_response) or {
@@ -117,6 +125,7 @@ pub fn (mut l Login) get_default_sales_channel() string {
 	return sales_channel_data.data[0].id
 }
 
+[inline]
 pub fn (mut l Login) get_default_media_folder() string {
 	response := l.get('media-folder?filter[name]=Imported Media')
 	data := json.decode(ShopResponseFind, response) or {

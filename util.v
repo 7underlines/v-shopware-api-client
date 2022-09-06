@@ -1,6 +1,7 @@
 module shopwareac
 
 // Percent-encoding reserved characters eg. for filter parameters
+[inline]
 pub fn encode(s string) string {
 	mut r := s
 	r = r.replace('%', '%25')
@@ -26,6 +27,7 @@ pub fn encode(s string) string {
 }
 
 // strip not allowed chars
+[inline]
 pub fn strip(s string) string {
 	mut r := s
 	r = r.replace("'", '')

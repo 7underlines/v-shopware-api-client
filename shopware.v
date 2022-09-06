@@ -7,6 +7,7 @@ import os
 import arrays
 
 // auth get's called automatic and renews the oauth token if needed
+[inline]
 pub fn (mut l Login) auth() bool {
 	t := time.now()
 	tu := t.unix_time()
@@ -60,6 +61,7 @@ pub fn (mut l Login) auth() bool {
 	return false
 }
 
+[inline]
 pub fn (mut l Login) get(endpoint string) string {
 	mut resp := l.fetch(.get, endpoint, '')
 	if resp.status_code != 200 {
@@ -74,11 +76,13 @@ pub fn (mut l Login) get(endpoint string) string {
 	return resp.body
 }
 
+[inline]
 pub fn (mut l Login) get_raw(endpoint string) http.Response {
 	return l.fetch(.get, endpoint, '')
 }
 
 // post returns the id of the created content on success
+[inline]
 pub fn (mut l Login) post(endpoint string, data string) string {
 	resp := l.fetch(.post, endpoint, data)
 	if resp.status_code != 204 && resp.status_code != 200 {
@@ -101,10 +105,12 @@ pub fn (mut l Login) post(endpoint string, data string) string {
 	}
 }
 
+[inline]
 pub fn (mut l Login) search(entity string, data string) string {
 	return l.post('search/$entity', data)
 }
 
+[inline]
 pub fn (mut l Login) patch(endpoint string, data string) {
 	resp := l.fetch(.patch, endpoint, data)
 	if resp.status_code != 204 {
@@ -135,6 +141,7 @@ pub fn (mut l Login) patch(endpoint string, data string) {
 	}
 }
 
+[inline]
 pub fn (mut l Login) delete(endpoint string, id string) {
 	url := endpoint + '/' + id
 	resp := l.fetch(.delete, url, '')
@@ -145,6 +152,7 @@ pub fn (mut l Login) delete(endpoint string, id string) {
 	}
 }
 
+[inline]
 fn (mut l Login) fetch(method http.Method, url string, data string) http.Response {
 	l.auth()
 	if l.token.access_token == '' {
@@ -184,6 +192,7 @@ fn (mut l Login) fetch(method http.Method, url string, data string) http.Respons
 }
 
 // sync API is an add-on to the Admin API that allows you to perform multiple write operations (creating/updating and deleting) simultaneously
+[inline]
 pub fn (mut l Login) sync(data string) string {
 	l.auth()
 	mut h := http.new_header(http.HeaderConfig{
@@ -253,6 +262,7 @@ pub fn (mut l Login) sync(data string) string {
 }
 
 // sync_upsert is a shorthand function for sync with data chunking for large arrays
+[inline]
 pub fn (mut l Login) sync_upsert(entity string, data []string) string {
 	mut responses := ''
 	chunks := arrays.chunk(data, 400) // split into chunks
@@ -269,6 +279,7 @@ pub fn (mut l Login) sync_upsert(entity string, data []string) string {
 }
 
 // sync_delete is a shorthand function for sync with data chunking for large arrays
+[inline]
 pub fn (mut l Login) sync_delete(entity string, data []string) string {
 	mut responses := ''
 	chunks := arrays.chunk(data, 400) // split into chunks
@@ -282,12 +293,14 @@ pub fn (mut l Login) sync_delete(entity string, data []string) string {
 }
 
 // get_last_sync returns the last sync payload
+[inline]
 pub fn (mut l Login) get_last_sync() string {
 	data := os.read_file(@FILE + '_api_retry_cache.json') or { return '' }
 	return data
 }
 
 // resend_sync sends the last sync operation (sync saves data into a file) again to the shop api - useful for debugging or temporary errors
+[inline]
 pub fn (mut l Login) resend_sync() {
 	data := os.read_file(@FILE + '_api_retry_cache.json') or { return }
 	l.auth()

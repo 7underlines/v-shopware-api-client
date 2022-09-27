@@ -2,7 +2,7 @@
 
 This is a pure [V](https://vlang.io) module that can be used to communicate with [Shopware 6](https://github.com/shopware/platform).
 
-Requires at least shopware 6.4.
+Requires at least Shopware version 6.4.
 
 Shopware Admin API credentials can be generated in the shopware backend (Settings->System->Integrations).
 
@@ -91,6 +91,7 @@ fn main() {
 # Module documentation
 
 ## Contents
+- [date_time](#date_time)
 - [encode](#encode)
 - [strip](#strip)
 - [Login](#Login)
@@ -120,6 +121,15 @@ fn main() {
   - [upload](#upload)
   - [upload_file](#upload_file)
 - [ShopResponseData](#ShopResponseData)
+
+## date_time
+```v
+fn date_time() string
+```
+
+current time formatted for Shopware date time custom fields eg. "2022-01-16T12:00:00+00:00"
+
+[[Return to contents]](#Contents)
 
 ## encode
 ```v
@@ -378,7 +388,7 @@ pub:
 
 [[Return to contents]](#Contents)
 
-#### Powered by vdoc. Generated on: 17 Aug 2022 12:06:22
+#### Powered by vdoc. Generated on: 27 Sep 2022 12:26:45
 
 ```bash
 v doc -f md .

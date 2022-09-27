@@ -43,3 +43,10 @@ pub fn strip(s string) string {
 	r = r.replace('*', '')
 	return r
 }
+
+// current time formatted for Shopware date time custom fields eg. "2022-01-16T12:00:00+00:00"
+pub fn date_time() string {
+	date := time.utc().get_fmt_date_str(time.FormatDelimiter.hyphen, time.FormatDate.yyyymmdd)
+	mytime := time.utc().get_fmt_time_str(time.FormatTime.hhmmss24)
+	return '${date}T$mytime+00:00'
+}

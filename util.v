@@ -1,5 +1,7 @@
 module shopwareac
 
+import time
+
 // Percent-encoding reserved characters eg. for filter parameters
 pub fn encode(s string) string {
 	mut r := s

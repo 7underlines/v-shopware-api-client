@@ -193,7 +193,7 @@ fn (mut l Login) delete(endpoint string, id string)
 
 ## find_category_by_customfield
 ```v
-fn (mut l Login) find_category_by_customfield(field string, value string) ?ShopResponseData
+fn (mut l Login) find_category_by_customfield(field string, value string) !ShopResponseData
 ```
 
 
@@ -201,7 +201,7 @@ fn (mut l Login) find_category_by_customfield(field string, value string) ?ShopR
 
 ## find_media_by_name
 ```v
-fn (mut l Login) find_media_by_name(name string) ?ShopResponseData
+fn (mut l Login) find_media_by_name(name string) !ShopResponseData
 ```
 
 
@@ -209,7 +209,7 @@ fn (mut l Login) find_media_by_name(name string) ?ShopResponseData
 
 ## find_product_by_customfield
 ```v
-fn (mut l Login) find_product_by_customfield(field string, value string) ?ShopResponseData
+fn (mut l Login) find_product_by_customfield(field string, value string) !ShopResponseData
 ```
 
 
@@ -217,7 +217,7 @@ fn (mut l Login) find_product_by_customfield(field string, value string) ?ShopRe
 
 ## find_product_by_productnumber
 ```v
-fn (mut l Login) find_product_by_productnumber(productnumber string) ?ShopResponseData
+fn (mut l Login) find_product_by_productnumber(productnumber string) !ShopResponseData
 ```
 
 
@@ -225,7 +225,7 @@ fn (mut l Login) find_product_by_productnumber(productnumber string) ?ShopRespon
 
 ## find_property_by_name
 ```v
-fn (mut l Login) find_property_by_name(name string, group string) ?ShopResponseData
+fn (mut l Login) find_property_by_name(name string, group string) !ShopResponseData
 ```
 
 
@@ -233,7 +233,7 @@ fn (mut l Login) find_property_by_name(name string, group string) ?ShopResponseD
 
 ## find_subcategory_by_name
 ```v
-fn (mut l Login) find_subcategory_by_name(name string, parent string) ?ShopResponseData
+fn (mut l Login) find_subcategory_by_name(name string, parent string) !ShopResponseData
 ```
 
 
@@ -360,7 +360,7 @@ Attach resource data to the media object from the given url
 
 ## upload
 ```v
-fn (mut l Login) upload(file_url string, name string, media_folder_id string) ?string
+fn (mut l Login) upload(file_url string, name string, media_folder_id string) !string
 ```
 
 upload returns the mediaId of the uploaded file on success
@@ -369,7 +369,7 @@ upload returns the mediaId of the uploaded file on success
 
 ## upload_file
 ```v
-fn (mut l Login) upload_file(media_id string, name string, _ext string, data string) ?
+fn (mut l Login) upload_file(media_id string, name string, _ext string, data string) !
 ```
 
 upload_file via binary blob
@@ -388,7 +388,8 @@ pub:
 
 [[Return to contents]](#Contents)
 
-#### Powered by vdoc. Generated on: 27 Sep 2022 12:26:45
+#### Powered by vdoc. Generated on: 26 Jan 2023 16:03:46
+
 
 ```bash
 v doc -f md .

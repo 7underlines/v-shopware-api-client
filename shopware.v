@@ -38,12 +38,12 @@ pub fn (mut l Login) auth() bool {
 	}
 
 	resp := http.fetch(config) or {
-		println('HTTP POST request to auth at shop failed - url: $url - error:')
+		println('HTTP POST request to auth at shop failed - url: ${url} - error:')
 		println(err)
 		http.Response{}
 	}
 	if resp.status_code != 200 {
-		println('Shop auth failed - statuscode: $resp.status_code - response from shop:')
+		println('Shop auth failed - statuscode: ${resp.status_code} - response from shop:')
 		println(resp.body)
 	}
 	token := json.decode(AuthToken, resp.body) or {
@@ -63,7 +63,7 @@ pub fn (mut l Login) auth() bool {
 pub fn (mut l Login) get(endpoint string) string {
 	mut resp := l.fetch(.get, endpoint, '')
 	if resp.status_code != 200 {
-		println('Problem at fetching data from shop at $endpoint - statuscode: $resp.status_code - response from shop:')
+		println('Problem at fetching data from shop at ${endpoint} - statuscode: ${resp.status_code} - response from shop:')
 		println(resp.body)
 		println('Retry')
 		resp = l.fetch(.get, endpoint, '')
@@ -82,7 +82,7 @@ pub fn (mut l Login) get_raw(endpoint string) http.Response {
 pub fn (mut l Login) post(endpoint string, data string) string {
 	resp := l.fetch(.post, endpoint, data)
 	if resp.status_code != 204 && resp.status_code != 200 {
-		println('Error response from shop at POST - endpoint: $endpoint - statuscode: $resp.status_code - response from shop:')
+		println('Error response from shop at POST - endpoint: ${endpoint} - statuscode: ${resp.status_code} - response from shop:')
 		println(resp.body)
 		println('Data send to shop:')
 		println(data)
@@ -102,13 +102,13 @@ pub fn (mut l Login) post(endpoint string, data string) string {
 }
 
 pub fn (mut l Login) search(entity string, data string) string {
-	return l.post('search/$entity', data)
+	return l.post('search/${entity}', data)
 }
 
 pub fn (mut l Login) patch(endpoint string, data string) {
 	resp := l.fetch(.patch, endpoint, data)
 	if resp.status_code != 204 {
-		println('Error response from shop at PATCH - endpoint: $endpoint - statuscode: $resp.status_code - response from shop:')
+		println('Error response from shop at PATCH - endpoint: ${endpoint} - statuscode: ${resp.status_code} - response from shop:')
 		println(resp.body)
 		println('Data send to shop:')
 		println(data)
@@ -122,7 +122,7 @@ pub fn (mut l Login) patch(endpoint string, data string) {
 			// 		exit(1)
 			// 	}
 			// 	if resp2.status_code != 204 {
-			println('Error response from shop at PATCH - endpoint: $endpoint - statuscode: $resp.status_code - response from shop:')
+			println('Error response from shop at PATCH - endpoint: ${endpoint} - statuscode: ${resp.status_code} - response from shop:')
 			println(resp.body)
 			println('Data send to shop:')
 			println(data)
@@ -139,7 +139,7 @@ pub fn (mut l Login) delete(endpoint string, id string) {
 	url := endpoint + '/' + id
 	resp := l.fetch(.delete, url, '')
 	if resp.status_code != 204 {
-		println('Error response from shop at DELETE - url: $url - statuscode: $resp.status_code - response from shop:')
+		println('Error response from shop at DELETE - url: ${url} - statuscode: ${resp.status_code} - response from shop:')
 		println(resp.body)
 		exit(1)
 	}
@@ -163,11 +163,11 @@ fn (mut l Login) fetch(method http.Method, url string, data string) http.Respons
 			value: accept_all
 		}, http.HeaderConfig{
 			key: .authorization
-			value: 'Bearer $l.token.access_token'
+			value: 'Bearer ${l.token.access_token}'
 		})
 	}
 	resp := request.do() or {
-		eprintln('HTTP $method request to shop failed - url: $l.api_url$url - error:')
+		eprintln('HTTP ${method} request to shop failed - url: ${l.api_url}${url} - error:')
 		eprintln(err)
 		http.Response{}
 	}
@@ -194,7 +194,7 @@ pub fn (mut l Login) sync(data string) string {
 		value: accept_all
 	}, http.HeaderConfig{
 		key: .authorization
-		value: 'Bearer $l.token.access_token'
+		value: 'Bearer ${l.token.access_token}'
 	})
 	h.add_custom('single-operation', '1') or {
 		println('add single-operation sync header failed')
@@ -220,7 +220,7 @@ pub fn (mut l Login) sync(data string) string {
 		exit(1)
 	}
 	if resp.status_code != 204 && resp.status_code != 200 {
-		println('Error response from shop at sync - statuscode: $resp.status_code - response from shop:')
+		println('Error response from shop at sync - statuscode: ${resp.status_code} - response from shop:')
 		if resp.body.contains('"source":{"pointer":') {
 			e := json.decode(ShopResponseSyncError, resp.body) or {
 				println("Can't json decode shop error response: " + resp.body)
@@ -261,7 +261,7 @@ pub fn (mut l Login) sync_upsert(entity string, data []string) string {
 			time.sleep(1 * time.second)
 		}
 		c := chunk.filter(it != '')
-		sync_data := '{"v-sync-$entity":{"entity":"$entity","action":"upsert","payload":[' +
+		sync_data := '{"v-sync-${entity}":{"entity":"${entity}","action":"upsert","payload":[' +
 			c.join(',') + ']}}'
 		responses += l.sync(sync_data)
 	}
@@ -274,7 +274,7 @@ pub fn (mut l Login) sync_delete(entity string, data []string) string {
 	chunks := arrays.chunk(data, 400) // split into chunks
 	for chunk in chunks {
 		c := chunk.filter(it != '')
-		sync_data := '{"v-sync-$entity":{"entity":"$entity","action":"delete","payload":[' +
+		sync_data := '{"v-sync-${entity}":{"entity":"${entity}","action":"delete","payload":[' +
 			c.join(',') + ']}}'
 		responses += l.sync(sync_data)
 	}

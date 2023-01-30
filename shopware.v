@@ -255,7 +255,7 @@ pub fn (mut l Login) sync(data string) string {
 // sync_upsert is a shorthand function for sync with data chunking for large arrays
 pub fn (mut l Login) sync_upsert(entity string, data []string) string {
 	mut responses := ''
-	chunks := arrays.chunk(data, 400) // split into chunks
+	chunks := arrays.chunk(data, 300) // split into chunks
 	for i, chunk in chunks {
 		if i > 0 {
 			time.sleep(1 * time.second)

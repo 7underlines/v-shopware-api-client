@@ -184,7 +184,7 @@ fn (mut l Login) fetch(method http.Method, url string, data string) http.Respons
 }
 
 // sync API is an add-on to the Admin API that allows you to perform multiple write operations (creating/updating and deleting) simultaneously
-pub fn (mut l Login) sync(data string) string {
+pub fn (mut l Login) sync(data string) ?string {
 	l.auth()
 	mut h := http.new_header(http.HeaderConfig{
 		key: .content_type
@@ -222,16 +222,10 @@ pub fn (mut l Login) sync(data string) string {
 	if resp.status_code != 204 && resp.status_code != 200 {
 		println('Error response from shop at sync - statuscode: ${resp.status_code} - response from shop:')
 		if resp.body.contains('"source":{"pointer":') {
-			e := json.decode(ShopResponseSyncError, resp.body) or {
-				println("Can't json decode shop error response: " + resp.body)
-				// println('Data send to shop: $data')
-				exit(1)
-			}
-			println(e)
+			e := json.decode(ShopResponseSyncError, resp.body) or { return error(resp.body) }
 			pos := data[1..].index('{') or { -1 }
 			if pos > -1 {
 				payload := json.decode(SyncPayload, data[pos + 1..data.len - 1]) or {
-					// println("Can't json decode sync payload")
 					SyncPayload{}
 				}
 				error_source_array := e.errors[0].source.pointer.split('/')
@@ -239,46 +233,48 @@ pub fn (mut l Login) sync(data string) string {
 					error_item_nr := error_source_array[2]
 					println('Error record:')
 					println(payload.payload[error_item_nr.int()]) // todo - figure out why this doesn't print nested vars
-				} else {
-					// println('Data send to shop: $data')
 				}
 			}
-		} else {
-			println(resp.body)
-			// println('Data send to shop: $data')
 		}
-		exit(1)
+		return error(resp.body)
 	}
 	return resp.body
 }
 
 // sync_upsert is a shorthand function for sync with data chunking for large arrays
-pub fn (mut l Login) sync_upsert(entity string, data []string) string {
-	mut responses := ''
-	chunks := arrays.chunk(data, 300) // split into chunks
+pub fn (mut l Login) sync_upsert(entity string, data []string) {
+	chunks := arrays.chunk(data, 400) // split into chunks
 	for i, chunk in chunks {
 		if i > 0 {
-			time.sleep(1 * time.second)
+			time.sleep(2 * time.second)
 		}
 		c := chunk.filter(it != '')
 		sync_data := '{"v-sync-${entity}":{"entity":"${entity}","action":"upsert","payload":[' +
 			c.join(',') + ']}}'
-		responses += l.sync(sync_data)
+		l.sync(sync_data) or {
+			println('sync upsert failed - error: ${err}')
+			// {"errors":[{"code":"40001","status":"500","title":"Internal Server Error","detail":"SQLSTATE[40001]: Serialization failure: 1213 Deadlock found when trying to get lock; try restarting transaction"}]}
+			if err.msg().contains('try restarting transaction') {
+				println('this might be a temporary error - retring ...')
+				time.sleep(60 * time.second)
+				l.sync(sync_data) or {
+					eprintln('sync upsert also failed on retry - error: ${err} - giving up')
+				}
+			}
+			return
+		}
 	}
-	return responses
 }
 
 // sync_delete is a shorthand function for sync with data chunking for large arrays
-pub fn (mut l Login) sync_delete(entity string, data []string) string {
-	mut responses := ''
+pub fn (mut l Login) sync_delete(entity string, data []string) {
 	chunks := arrays.chunk(data, 400) // split into chunks
 	for chunk in chunks {
 		c := chunk.filter(it != '')
 		sync_data := '{"v-sync-${entity}":{"entity":"${entity}","action":"delete","payload":[' +
 			c.join(',') + ']}}'
-		responses += l.sync(sync_data)
+		l.sync(sync_data) or { return }
 	}
-	return responses
 }
 
 // get_last_sync returns the last sync payload
@@ -291,5 +287,5 @@ pub fn (mut l Login) get_last_sync() string {
 pub fn (mut l Login) resend_sync() {
 	data := os.read_file(@FILE + '_api_retry_cache.json') or { return }
 	l.auth()
-	l.sync(data)
+	l.sync(data) or { return }
 }

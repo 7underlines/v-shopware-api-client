@@ -117,6 +117,21 @@ pub fn (mut l Login) get_default_sales_channel() string {
 	return sales_channel_data.data[0].id
 }
 
+pub fn (mut l Login) get_default_payment_method() string {
+	sales_channel_type_response := l.get('sales-channel-type?filter[name]=Storefront')
+	sales_channel_type_data := json.decode(ShopResponseFind, sales_channel_type_response) or {
+		println('Failed to decode sales channel type json')
+		exit(1)
+	}
+	sales_channel_response := l.get('sales-channel-type/${sales_channel_type_data.data[0].id}/salesChannels')
+	sales_channel_data := json.decode(ShopResponseFind, sales_channel_response) or {
+		println('Failed to decode sales channel json')
+		exit(1)
+	}
+	println(sales_channel_data)
+	return sales_channel_data.data[0].attributes.payment_method_id
+}
+
 pub fn (mut l Login) get_default_media_folder() string {
 	response := l.get('media-folder?filter[name]=Imported Media')
 	data := json.decode(ShopResponseFind, response) or {

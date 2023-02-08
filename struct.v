@@ -70,6 +70,7 @@ pub:
 	active                 bool
 	product_number         string            [json: productNumber]
 	custom_search_keywords []string          [json: customSearchKeywords]
+	payment_method_id      string            [json: paymentMethodId]
 }
 
 struct ErrorDetail {

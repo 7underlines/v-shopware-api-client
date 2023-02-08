@@ -128,7 +128,6 @@ pub fn (mut l Login) get_default_payment_method() string {
 		println('Failed to decode sales channel json')
 		exit(1)
 	}
-	println(sales_channel_data)
 	return sales_channel_data.data[0].attributes.payment_method_id
 }
 

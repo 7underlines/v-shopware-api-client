@@ -197,12 +197,13 @@ pub fn (mut l Login) sync(data string) ?string {
 		value: 'Bearer ${l.token.access_token}'
 	})
 	h.add_custom('single-operation', '1') or {
-		println('add single-operation sync header failed')
-		exit(1)
+		panic(err)
 	}
 	// h.add_custom('indexing-behavior', 'use-queue-indexing') or {
-	// 	println('add indexing-behavior sync header failed')
-	// 	exit(1)
+	// 	panic(err)
+	// }
+	// h.add_custom('fail-on-error', '0') or {
+	// 	panic(err)
 	// }
 	request := http.Request{
 		method: .post
@@ -265,6 +266,20 @@ pub fn (mut l Login) sync_upsert(entity string, data []string) {
 		}
 	}
 }
+
+// sync_upsert_queue doesn't immediatly process sync operations and must be processed with the Shopware 6 message queue
+// pub fn (mut l Login) sync_upsert_queue(entity string, data []string) {
+// 	chunks := arrays.chunk(data, 400) // split into chunks
+// 	for i, chunk in chunks {
+// 		c := chunk.filter(it != '')
+// 		sync_data := '{"v-sync-${entity}":{"entity":"${entity}","action":"upsert","payload":[' +
+// 			c.join(',') + ']}}'
+// 		l.sync(sync_data) or {
+// 			eprintln('sync upsert queue failed - error: ${err}')
+// 			return
+// 		}
+// 	}
+// }
 
 // sync_delete is a shorthand function for sync with data chunking for large arrays
 pub fn (mut l Login) sync_delete(entity string, data []string) {

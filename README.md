@@ -106,6 +106,7 @@ fn main() {
   - [find_subcategory_by_name](#find_subcategory_by_name)
   - [get](#get)
   - [get_default_media_folder](#get_default_media_folder)
+  - [get_default_payment_method](#get_default_payment_method)
   - [get_default_sales_channel](#get_default_sales_channel)
   - [get_default_tax](#get_default_tax)
   - [get_last_sync](#get_last_sync)
@@ -255,6 +256,14 @@ fn (mut l Login) get_default_media_folder() string
 
 [[Return to contents]](#Contents)
 
+## get_default_payment_method
+```v
+fn (mut l Login) get_default_payment_method() string
+```
+
+
+[[Return to contents]](#Contents)
+
 ## get_default_sales_channel
 ```v
 fn (mut l Login) get_default_sales_channel() string
@@ -324,7 +333,7 @@ fn (mut l Login) search(entity string, data string) string
 
 ## sync
 ```v
-fn (mut l Login) sync(data string) string
+fn (mut l Login) sync(data string) ?string
 ```
 
 sync API is an add-on to the Admin API that allows you to perform multiple write operations (creating/updating and deleting) simultaneously
@@ -333,7 +342,7 @@ sync API is an add-on to the Admin API that allows you to perform multiple write
 
 ## sync_delete
 ```v
-fn (mut l Login) sync_delete(entity string, data []string) string
+fn (mut l Login) sync_delete(entity string, data []string)
 ```
 
 sync_delete is a shorthand function for sync with data chunking for large arrays
@@ -342,7 +351,7 @@ sync_delete is a shorthand function for sync with data chunking for large arrays
 
 ## sync_upsert
 ```v
-fn (mut l Login) sync_upsert(entity string, data []string) string
+fn (mut l Login) sync_upsert(entity string, data []string)
 ```
 
 sync_upsert is a shorthand function for sync with data chunking for large arrays
@@ -388,7 +397,8 @@ pub:
 
 [[Return to contents]](#Contents)
 
-#### Powered by vdoc. Generated on: 26 Jan 2023 16:03:46
+#### Powered by vdoc. Generated on: 14 Mar 2023 12:37:36
+
 
 
 ```bash

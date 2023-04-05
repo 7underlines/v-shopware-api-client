@@ -184,7 +184,7 @@ fn (mut l Login) fetch(method http.Method, url string, data string) http.Respons
 }
 
 // sync API is an add-on to the Admin API that allows you to perform multiple write operations (creating/updating and deleting) simultaneously
-pub fn (mut l Login) sync(data string) ?string {
+pub fn (mut l Login) sync(data string) !string {
 	l.auth()
 	mut h := http.new_header(http.HeaderConfig{
 		key: .content_type

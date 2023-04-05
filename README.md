@@ -333,7 +333,7 @@ fn (mut l Login) search(entity string, data string) string
 
 ## sync
 ```v
-fn (mut l Login) sync(data string) ?string
+fn (mut l Login) sync(data string) !string
 ```
 
 sync API is an add-on to the Admin API that allows you to perform multiple write operations (creating/updating and deleting) simultaneously

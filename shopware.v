@@ -221,7 +221,7 @@ pub fn (mut l Login) sync(data string) !string {
 		exit(1)
 	}
 	if resp.status_code != 204 && resp.status_code != 200 {
-		println('Error response from shop at sync - statuscode: ${resp.status_code} - response from shop:')
+		println('Error response from shop at sync - statuscode: ${resp.status_code}')
 		if resp.body.contains('"source":{"pointer":') {
 			e := json.decode(ShopResponseSyncError, resp.body) or { return error(resp.body) }
 			pos := data[1..].index('{') or { -1 }
@@ -244,16 +244,16 @@ pub fn (mut l Login) sync(data string) !string {
 
 // sync_upsert is a shorthand function for sync with data chunking for large arrays
 pub fn (mut l Login) sync_upsert(entity string, data []string) {
-	chunks := arrays.chunk(data, 300) // split into chunks
+	chunks := arrays.chunk(data, 250) // split into chunks
 	for i, chunk in chunks {
 		if i > 0 {
-			time.sleep(3000 * time.millisecond)
+			time.sleep(10 * time.second)
 		}
 		c := chunk.filter(it != '')
 		sync_data := '{"v-sync-${entity}":{"entity":"${entity}","action":"upsert","payload":[' +
 			c.join(',') + ']}}'
 		l.sync(sync_data) or {
-			println('sync upsert failed - error: ${err}')
+			println('${time.now()} sync upsert failed - error: ${err}')
 			// {"errors":[{"code":"40001","status":"500","title":"Internal Server Error","detail":"SQLSTATE[40001]: Serialization failure: 1213 Deadlock found when trying to get lock; try restarting transaction"}]}
 			if err.msg().contains('try restarting transaction') {
 				println('this might be a temporary error - retrying ...')

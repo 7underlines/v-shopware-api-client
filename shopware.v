@@ -141,7 +141,6 @@ pub fn (mut l Login) delete(endpoint string, id string) {
 	if resp.status_code != 204 {
 		println('Error response from shop at DELETE - url: ${url} - statuscode: ${resp.status_code} - response from shop:')
 		println(resp.body)
-		exit(1)
 	}
 }
 
@@ -244,10 +243,10 @@ pub fn (mut l Login) sync(data string) !string {
 
 // sync_upsert is a shorthand function for sync with data chunking for large arrays
 pub fn (mut l Login) sync_upsert(entity string, data []string) {
-	chunks := arrays.chunk(data, 150) // split into chunks
+	chunks := arrays.chunk(data, 200) // split into chunks
 	for i, chunk in chunks {
 		if i > 0 {
-			time.sleep(5 * time.second)
+			time.sleep(7 * time.second)
 		}
 		c := chunk.filter(it != '')
 		sync_data := '{"v-sync-${entity}":{"entity":"${entity}","action":"upsert","payload":[' +

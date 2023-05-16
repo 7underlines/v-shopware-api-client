@@ -246,7 +246,7 @@ pub fn (mut l Login) sync_upsert(entity string, data []string) {
 	chunks := arrays.chunk(data, 250) // split into chunks
 	for i, chunk in chunks {
 		if i > 0 {
-			time.sleep(3 * time.second)
+			time.sleep(4 * time.second)
 		}
 		c := chunk.filter(it != '')
 		sync_data := '{"v-sync-${entity}":{"entity":"${entity}","action":"upsert","payload":[' +
@@ -256,7 +256,7 @@ pub fn (mut l Login) sync_upsert(entity string, data []string) {
 			// {"errors":[{"code":"40001","status":"500","title":"Internal Server Error","detail":"SQLSTATE[40001]: Serialization failure: 1213 Deadlock found when trying to get lock; try restarting transaction"}]}
 			if err.msg().contains('try restarting transaction') {
 				println('this might be a temporary error caused by updating the same entity multiple times - retrying ...')
-				time.sleep(20 * time.second)
+				time.sleep(15 * time.second)
 				l.sync(sync_data) or {
 					eprintln('sync upsert also failed on retry - error: ${err} - giving up')
 					return

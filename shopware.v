@@ -217,7 +217,12 @@ pub fn (mut l Login) sync(data string) !string {
 	resp := request.do() or {
 		println('Unable to make HTTP sync request to shop')
 		println(err)
-		exit(1)
+		println('Retrying ...')
+		time.sleep(10 * time.second)
+		request.do() or {
+			eprintln('sync request also failed on retry - error: ${err} - giving up')
+			return error(err.msg())
+		}
 	}
 	if resp.status_code != 204 && resp.status_code != 200 {
 		// println('Error response from shop at sync - statuscode: ${resp.status_code}')
@@ -256,7 +261,7 @@ pub fn (mut l Login) sync_upsert(entity string, data []string) {
 			// {"errors":[{"code":"40001","status":"500","title":"Internal Server Error","detail":"SQLSTATE[40001]: Serialization failure: 1213 Deadlock found when trying to get lock; try restarting transaction"}]}
 			if err.msg().contains('try restarting transaction') {
 				println('this might be a temporary error caused by updating the same entity multiple times - retrying ...')
-				time.sleep(15 * time.second)
+				time.sleep(10 * time.second)
 				l.sync(sync_data) or {
 					eprintln('sync upsert also failed on retry - error: ${err} - giving up')
 					return

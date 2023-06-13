@@ -1,4 +1,4 @@
-import treffner.shopwareac
+import thomaspeissl.shopwareac
 import json
 
 struct ShopResponse {

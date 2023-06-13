@@ -1,4 +1,4 @@
-import treffner.shopwareac
+import thomaspeissl.shopwareac
 
 fn main() {
 	mut sw_api := shopwareac.Login{ // mut is needed for the automated oauth2 token renewal

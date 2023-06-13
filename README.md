@@ -33,7 +33,7 @@ v init
 ```
 Then edit the dependencies in your v.mod file to look like this: 
 ```v
-dependencies: ['treffner.shopwareac']
+dependencies: ['thomaspeissl.shopwareac']
 ```
 And install with:
 ```shell
@@ -43,12 +43,12 @@ To update your dependencies later just run "v install" again.
 
 ### Or via VPM:
 ```shell
-v install treffner.shopwareac
+v install thomaspeissl.shopwareac
 ```
 
 ### Or through Git:
 ```shell
-git clone https://github.com/thomaspeissl/v-shopware-api-client.git ~/.vmodules/treffner/shopwareac
+git clone https://github.com/thomaspeissl/v-shopware-api-client.git ~/.vmodules/thomaspeissl/shopwareac
 ```
 
 ## Running the examples
@@ -64,7 +64,7 @@ This example gets products from the admin api and prints out their product ids.
 ```v
 module main
 
-import treffner.shopwareac
+import thomaspeissl.shopwareac
 import json
 
 struct ShopResponse {

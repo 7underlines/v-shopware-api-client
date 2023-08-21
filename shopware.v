@@ -248,10 +248,10 @@ pub fn (mut l Login) sync(data string) !string {
 
 // sync_upsert is a shorthand function for sync with data chunking for large arrays
 pub fn (mut l Login) sync_upsert(entity string, data []string) {
-	chunks := arrays.chunk(data, 190) // split into chunks
+	chunks := arrays.chunk(data, 180) // split into chunks
 	for i, chunk in chunks {
 		if i > 0 {
-			time.sleep(4 * time.second)
+			time.sleep(4100 * time.millisecond)
 		}
 		c := chunk.filter(it != '')
 		sync_data := '{"v-sync-${entity}":{"entity":"${entity}","action":"upsert","payload":[' +

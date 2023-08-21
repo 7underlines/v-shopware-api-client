@@ -3,6 +3,7 @@ module shopwareac
 import net.http
 import time
 import json
+import x.json2
 import os
 import arrays
 
@@ -308,4 +309,10 @@ pub fn (mut l Login) resend_sync() {
 	data := os.read_file(@FILE + '_api_retry_cache.json') or { return }
 	l.auth()
 	l.sync(data) or { return }
+}
+
+pub fn decode(data string) map[string]json2.Any {
+	d := json2.raw_decode(data) or { return map[string]json2.Any{} }
+	m := d.as_map()
+	return m
 }

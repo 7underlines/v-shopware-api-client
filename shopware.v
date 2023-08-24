@@ -252,7 +252,7 @@ pub fn (mut l Login) sync_upsert(entity string, data []string) {
 	chunks := arrays.chunk(data, 150) // split into chunks
 	for i, chunk in chunks {
 		if i > 0 {
-			time.sleep(5000 * time.millisecond)
+			time.sleep(1000 * time.millisecond)
 		}
 		c := chunk.filter(it != '')
 		sync_data := '{"v-sync-${entity}":{"entity":"${entity}","action":"upsert","payload":[' +

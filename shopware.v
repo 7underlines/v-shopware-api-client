@@ -241,6 +241,26 @@ pub fn (mut l Login) sync(data string) !string {
 					println(payload.payload[error_item_nr.int()]) // todo - figure out why this doesn't print nested vars
 				}
 			}
+		} else {
+			println('Error from Shop at sync/post - statuscode: ${resp.status_code} - response from shop:')
+			println(resp.body)
+			println('Retrying ...')
+			time.sleep(10 * time.second)
+			resp2 := request.do() or {
+				println('Unable to make HTTP sync request to shop on retry')
+				println(err)
+				println('Retrying ...')
+				time.sleep(10 * time.second)
+				request.do() or {
+					eprintln('sync request also failed on retry - error: ${err} - giving up')
+					return error(err.msg())
+				}
+			}
+			if resp2.status_code != 204 && resp2.status_code != 200 {
+				println('Error response from shop at sync retry - statuscode: ${resp2.status_code}')
+				return error(resp2.body)
+			}
+			return resp2.body
 		}
 		return error(resp.body)
 	}
@@ -249,7 +269,7 @@ pub fn (mut l Login) sync(data string) !string {
 
 // sync_upsert is a shorthand function for sync with data chunking for large arrays
 pub fn (mut l Login) sync_upsert(entity string, data []string) {
-	chunks := arrays.chunk(data, 150) // split into chunks
+	chunks := arrays.chunk(data, 250) // split into chunks
 	for i, chunk in chunks {
 		if i > 0 {
 			time.sleep(1000 * time.millisecond)

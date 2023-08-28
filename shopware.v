@@ -219,7 +219,7 @@ pub fn (mut l Login) sync(data string) !string {
 		println('Unable to make HTTP sync request to shop')
 		println(err)
 		println('Retrying ...')
-		time.sleep(10 * time.second)
+		time.sleep(60 * time.second)
 		request.do() or {
 			eprintln('sync request also failed on retry - error: ${err} - giving up')
 			return error(err.msg())
@@ -245,12 +245,12 @@ pub fn (mut l Login) sync(data string) !string {
 			println('Error from Shop at sync/post - statuscode: ${resp.status_code} - response from shop:')
 			println(resp.body)
 			println('Retrying ...')
-			time.sleep(10 * time.second)
+			time.sleep(60 * time.second)
 			resp2 := request.do() or {
 				println('Unable to make HTTP sync request to shop on retry')
 				println(err)
 				println('Retrying ...')
-				time.sleep(10 * time.second)
+				time.sleep(60 * time.second)
 				request.do() or {
 					eprintln('sync request also failed on retry - error: ${err} - giving up')
 					return error(err.msg())

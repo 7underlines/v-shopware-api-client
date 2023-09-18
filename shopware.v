@@ -246,6 +246,7 @@ pub fn (mut l Login) sync(data string) !string {
 			println(resp.body)
 			println('Retrying ...')
 			time.sleep(60 * time.second)
+			l.auth()
 			resp2 := request.do() or {
 				println('Unable to make HTTP sync request to shop on retry')
 				println(err)
@@ -269,10 +270,10 @@ pub fn (mut l Login) sync(data string) !string {
 
 // sync_upsert is a shorthand function for sync with data chunking for large arrays
 pub fn (mut l Login) sync_upsert(entity string, data []string) {
-	chunks := arrays.chunk(data, 250) // split into chunks
+	chunks := arrays.chunk(data, 140) // split into chunks
 	for i, chunk in chunks {
 		if i > 0 {
-			time.sleep(1000 * time.millisecond)
+			time.sleep(5000 * time.millisecond)
 		}
 		c := chunk.filter(it != '')
 		sync_data := '{"v-sync-${entity}":{"entity":"${entity}","action":"upsert","payload":[' +

@@ -36,6 +36,7 @@ pub:
 }
 
 struct ShopResponse {
+pub:
 	errors []ErrorDetail
 	data   []ShopResponseData
 	d      ShopResponseData   [json: data]

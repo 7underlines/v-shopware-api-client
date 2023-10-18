@@ -213,7 +213,7 @@ pub fn (mut l Login) sync(data string) !string {
 		header: h
 	}
 	os.write_file(@FILE + '_api_retry_cache.json', data) or {
-		println('unable to create last sync log file - reason: ' + err.str())
+		// println('unable to create last sync log file - reason: ' + err.str())
 	}
 	resp := request.do() or {
 		println('Unable to make HTTP sync request to shop')
@@ -327,7 +327,11 @@ pub fn (mut l Login) get_last_sync() string {
 
 // resend_sync sends the last sync operation (sync saves data into a file) again to the shop api - useful for debugging or temporary errors
 pub fn (mut l Login) resend_sync() {
-	data := os.read_file(@FILE + '_api_retry_cache.json') or { return }
+	data := l.get_last_sync()
+	if data == '' {
+		println('no last sync data found')
+		return
+	}
 	l.auth()
 	l.sync(data) or { return }
 }

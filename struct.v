@@ -108,7 +108,7 @@ struct SyncPayload {
 	payload []map[string]string
 }
 
-struct Category {
+pub struct Category {
 	id string
 	name string
 	parent_id string [json: parentId]

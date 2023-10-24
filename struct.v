@@ -73,6 +73,8 @@ pub:
 	product_number         string            [json: productNumber]
 	custom_search_keywords []string          [json: customSearchKeywords]
 	payment_method_id      string            [json: paymentMethodId]
+	name                   string
+	parent_id              string            [json: parentId]
 }
 
 struct ErrorDetail {
@@ -109,8 +111,8 @@ struct SyncPayload {
 }
 
 pub struct Category {
-	id string
-	name string
-	parent_id string [json: parentId]
+	id          string
+	name        string
+	parent_id   string [json: parentId]
 	cms_page_id string [json: cmsPageId]
 }

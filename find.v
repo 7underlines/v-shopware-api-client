@@ -139,3 +139,12 @@ pub fn (mut l Login) get_default_media_folder() string {
 	}
 	return data.data[0].id
 }
+
+pub fn (mut l Login) get_default_cms_page() string {
+	response := l.get('cms-page/?filter[type]=product_list&limit=1')
+	data := json.decode(ShopResponseFind, response) or {
+		println('Failed to decode response json')
+		exit(1)
+	}
+	return data.data[0].id
+}

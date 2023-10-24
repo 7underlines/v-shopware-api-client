@@ -107,3 +107,10 @@ struct ShopResponseMeta {
 struct SyncPayload {
 	payload []map[string]string
 }
+
+struct Category {
+	id string
+	name string
+	parent_id string [json: parentId]
+	cms_page_id string [json: cmsPageId]
+}

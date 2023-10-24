@@ -44,6 +44,7 @@ pub:
 }
 
 struct ShopResponseSingle {
+pub:
 	data ShopResponseData
 }
 

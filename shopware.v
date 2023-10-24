@@ -63,7 +63,7 @@ pub fn (mut l Login) auth() bool {
 
 pub fn (mut l Login) get(endpoint string) string {
 	mut resp := l.fetch(.get, endpoint, '')
-	if resp.status_code != 200 {
+	if resp.status_code != 200 && resp.status_code != 404 {
 		println('Problem at fetching data from shop at ${endpoint} - statuscode: ${resp.status_code} - response from shop:')
 		println(resp.body)
 		println('Retry')

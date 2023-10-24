@@ -62,7 +62,7 @@ pub:
 	attributes Attributes
 }
 
-struct Attributes {
+pub struct Attributes {
 pub:
 	media_id               string            [json: mediaId]
 	cover_id               string            [json: coverId]

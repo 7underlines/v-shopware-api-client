@@ -116,3 +116,9 @@ pub struct Category {
 	parent_id   string [json: parentId]
 	cms_page_id string [json: cmsPageId]
 }
+
+pub struct Manufacturer {
+	id   string
+	name string
+	link string
+}

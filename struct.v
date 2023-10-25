@@ -113,7 +113,7 @@ struct SyncPayload {
 pub struct Category {
 	id          string
 	name        string
-	parent_id   string [json: parentId]
+	parent_id   string [json: parentId; omitempty]
 	cms_page_id string [json: cmsPageId]
 }
 

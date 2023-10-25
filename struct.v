@@ -143,6 +143,7 @@ pub:
 	media []Media [omitempty]
 	custom_fields CustomFields [json: "customFields"; omitempty]
 	ean string [omitempty]
+	max_purchase int [json: "maxPurchase"; omitempty]
 }
 
 pub struct Id {

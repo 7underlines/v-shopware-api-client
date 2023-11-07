@@ -150,10 +150,10 @@ pub struct Id {
 	id string [omitempty]
 }
 
-struct Visibilities {
+pub struct Visibilities {
 	id               string [omitempty]
 	sales_channel_id string [json: 'salesChannelId'; omitempty]
-	visibility       int    [omitempty]
+	visibility       int    [omitempty] = 30
 }
 
 struct Options {
@@ -174,6 +174,14 @@ struct Media {
 	media_folder_id string [json: 'mediaFolderId'; omitempty]
 }
 
-struct CustomFields {
-	customfields_import string [omitempty]
+pub struct CustomFields {
+	custom_import_field1 string [omitempty]
+	custom_import_field2 string [omitempty]
+	custom_import_field3 string [omitempty]
+	custom_import_field4 string [omitempty]
+	custom_import_field5 string [omitempty]
+	custom_import_field6 string [omitempty]
+	custom_import_field7 string [omitempty]
+	custom_import_field8 string [omitempty]
+	custom_import_field9 string [omitempty]
 }

@@ -23,6 +23,9 @@ pub fn (mut l Login) auth() bool {
 	if !l.api_url.contains('api') {
 		l.api_url += 'api/'
 	}
+	if !l.api_url.contains('http') {
+		l.api_url = 'https://' + l.api_url
+	}
 	url := l.api_url + 'oauth/token'
 
 	config := http.FetchConfig{

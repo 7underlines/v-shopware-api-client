@@ -127,7 +127,7 @@ pub struct Product {
 pub:
 	id                     string
 	name                   string         [omitempty]
-	stock                  int            [omitempty]
+	stock                  ?int           [omitempty]
 	product_number         string         [json: 'productNumber'; omitempty]
 	description            string         [omitempty]
 	manufacturer           Id             [omitempty]

@@ -143,6 +143,8 @@ pub:
 	media                  []Media        [omitempty]
 	custom_fields          CustomFields   [json: 'customFields'; omitempty]
 	ean                    string         [omitempty]
+	meta_title             string         [json: 'metaTitle'; omitempty]
+	meta_description       string         [json: 'metaDescription'; omitempty]
 	reference_unit         f64            [json: 'referenceUnit'; omitempty]
 	purchase_unit          f64            [json: 'purchaseUnit'; omitempty]
 	max_purchase           int            [json: 'maxPurchase'; omitempty]

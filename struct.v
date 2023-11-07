@@ -123,27 +123,27 @@ pub struct Manufacturer {
 	link string [omitempty]
 }
 
-pub struct Product{
+pub struct Product {
 pub:
-	id string
-	name string [omitempty]
-	stock int [omitempty]
-	product_number string [json: "productNumber"; omitempty]
-	description string [omitempty]
-	manufacturer Id [omitempty]
-	categories []Id [omitempty]
-	visibilities []Visibilities [omitempty]
-	tax_id string [json: "taxId"; omitempty]
-	keywords string [omitempty]
-	custom_search_keywords []string [json: "customSearchKeywords"; omitempty]
-	options []Options [omitempty]
-	weight int [omitempty]
-	price []Price [omitempty]
-	cover_id string [json: "coverId"; omitempty]
-	media []Media [omitempty]
-	custom_fields CustomFields [json: "customFields"; omitempty]
-	ean string [omitempty]
-	max_purchase int [json: "maxPurchase"; omitempty]
+	id                     string
+	name                   string         [omitempty]
+	stock                  int            [omitempty]
+	product_number         string         [json: 'productNumber'; omitempty]
+	description            string         [omitempty]
+	manufacturer           Id             [omitempty]
+	categories             []Id           [omitempty]
+	visibilities           []Visibilities [omitempty]
+	tax_id                 string         [json: 'taxId'; omitempty]
+	keywords               string         [omitempty]
+	custom_search_keywords []string       [json: 'customSearchKeywords'; omitempty]
+	options                []Options      [omitempty]
+	weight                 int            [omitempty]
+	price                  []Price        [omitempty]
+	cover_id               string         [json: 'coverId'; omitempty]
+	media                  []Media        [omitempty]
+	custom_fields          CustomFields   [json: 'customFields'; omitempty]
+	ean                    string         [omitempty]
+	max_purchase           int            [json: 'maxPurchase'; omitempty]
 }
 
 pub struct Id {
@@ -151,27 +151,27 @@ pub struct Id {
 }
 
 struct Visibilities {
-	id string [omitempty]
-	sales_channel_id string [json: "salesChannelId"; omitempty]
-	visibility int [omitempty]
+	id               string [omitempty]
+	sales_channel_id string [json: 'salesChannelId'; omitempty]
+	visibility       int    [omitempty]
 }
 
 struct Options {
-	id string [omitempty]
-	name string [omitempty]
-	group_id string [json: "groupId"; omitempty]
+	id       string [omitempty]
+	name     string [omitempty]
+	group_id string [json: 'groupId'; omitempty]
 }
 
 pub struct Price {
-	net f64
-	gross f64
-	currency_id string [json: "currencyId"] = 'b7d2554b0ce847cd82f3ac9bd1c0dfca'
-	linked bool = true
+	net         f64
+	gross       f64
+	currency_id string [json: 'currencyId'] = 'b7d2554b0ce847cd82f3ac9bd1c0dfca'
+	linked      bool = true
 }
 
 struct Media {
-	id string [omitempty]
-	media_folder_id string [json: "mediaFolderId"; omitempty]
+	id              string [omitempty]
+	media_folder_id string [json: 'mediaFolderId'; omitempty]
 }
 
 struct CustomFields {

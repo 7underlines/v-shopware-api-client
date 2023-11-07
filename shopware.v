@@ -39,17 +39,16 @@ pub fn (mut l Login) auth() bool {
 	}
 
 	resp := http.fetch(config) or {
-		println('HTTP POST request to auth at shop failed - url: ${url} - error:')
-		println(err)
-		http.Response{}
+		eprintln('HTTP POST request to auth at shop failed - url: ${url} - error: ${err}')
+		return false
 	}
 	if resp.status_code != 200 {
-		println('Shop auth failed - statuscode: ${resp.status_code} - response from shop:')
-		println(resp.body)
+		eprintln('Shop auth failed - statuscode: ${resp.status_code} - response from shop:')
+		eprintln(resp.body)
 	}
 	token := json.decode(AuthToken, resp.body) or {
-		println("Can't json decode shop auth token - response from shop:")
-		println(resp.body)
+		eprintln("Can't json decode shop auth token - response from shop:")
+		eprintln(resp.body)
 		AuthToken{}
 	}
 	l.token = token
@@ -64,12 +63,12 @@ pub fn (mut l Login) auth() bool {
 pub fn (mut l Login) get(endpoint string) string {
 	mut resp := l.fetch(.get, endpoint, '')
 	if resp.status_code != 200 && resp.status_code != 404 {
-		println('Problem at fetching data from shop at ${endpoint} - statuscode: ${resp.status_code} - response from shop:')
-		println(resp.body)
-		println('Retry')
+		eprintln('Problem at fetching data from shop at ${endpoint} - statuscode: ${resp.status_code} - response from shop:')
+		eprintln(resp.body)
+		eprintln('Retry')
 		resp = l.fetch(.get, endpoint, '')
 		if resp.status_code != 200 {
-			println('Also error on retry')
+			eprintln('Also error on retry')
 		}
 	}
 	return resp.body
@@ -83,10 +82,10 @@ pub fn (mut l Login) get_raw(endpoint string) http.Response {
 pub fn (mut l Login) post(endpoint string, data string) string {
 	resp := l.fetch(.post, endpoint, data)
 	if resp.status_code != 204 && resp.status_code != 200 {
-		println('Error response from shop at POST - endpoint: ${endpoint} - statuscode: ${resp.status_code} - response from shop:')
-		println(resp.body)
-		println('Data send to shop:')
-		println(data)
+		eprintln('Error response from shop at POST - endpoint: ${endpoint} - statuscode: ${resp.status_code} - response from shop:')
+		eprintln(resp.body)
+		eprintln('Data send to shop:')
+		eprintln(data)
 		// exit(1)
 	}
 	if resp.status_code == 204 {
@@ -109,24 +108,24 @@ pub fn (mut l Login) search(entity string, data string) string {
 pub fn (mut l Login) patch(endpoint string, data string) {
 	resp := l.fetch(.patch, endpoint, data)
 	if resp.status_code != 204 {
-		println('Error response from shop at PATCH - endpoint: ${endpoint} - statuscode: ${resp.status_code} - response from shop:')
-		println(resp.body)
-		println('Data send to shop:')
-		println(data)
+		eprintln('Error response from shop at PATCH - endpoint: ${endpoint} - statuscode: ${resp.status_code} - response from shop:')
+		eprintln(resp.body)
+		eprintln('Data send to shop:')
+		eprintln(data)
 		if resp.status_code == 500 {
 			// if resp.body.contains('FRAMEWORK__WRITE_TYPE_INTEND_ERROR') { // try again on this error
-			// 	println('trying again ...')
+			// 	eprintln('trying again ...')
 			// 	time.sleep_ms(2000)
 			// 	resp2 := http.fetch(url, config) or {
-			// 		println('HTTP PATCH request to shop failed - url: $url - error:')
-			// 		println(err)
+			// 		eprintln('HTTP PATCH request to shop failed - url: $url - error:')
+			// 		eprintln(err)
 			// 		exit(1)
 			// 	}
 			// 	if resp2.status_code != 204 {
-			println('Error response from shop at PATCH - endpoint: ${endpoint} - statuscode: ${resp.status_code} - response from shop:')
-			println(resp.body)
-			println('Data send to shop:')
-			println(data)
+			eprintln('Error response from shop at PATCH - endpoint: ${endpoint} - statuscode: ${resp.status_code} - response from shop:')
+			eprintln(resp.body)
+			eprintln('Data send to shop:')
+			eprintln(data)
 			exit(1)
 			// 	}
 			// } else {
@@ -140,8 +139,8 @@ pub fn (mut l Login) delete(endpoint string, id string) {
 	url := endpoint + '/' + id
 	resp := l.fetch(.delete, url, '')
 	if resp.status_code != 204 {
-		println('Error response from shop at DELETE - url: ${url} - statuscode: ${resp.status_code} - response from shop:')
-		println(resp.body)
+		eprintln('Error response from shop at DELETE - url: ${url} - statuscode: ${resp.status_code} - response from shop:')
+		eprintln(resp.body)
 	}
 }
 
@@ -167,17 +166,16 @@ fn (mut l Login) fetch(method http.Method, url string, data string) http.Respons
 		})
 	}
 	resp := request.do() or {
-		eprintln('HTTP ${method} request to shop failed - url: ${l.api_url}${url} - error:')
-		eprintln(err)
+		eprintln('HTTP ${method} request to shop failed - url: ${l.api_url}${url} - error: ${err}')
 		http.Response{}
 	}
 	if resp.status_code != 0 {
 		return resp
 	}
-	println('Retry')
+	eprintln('Retry')
 	l.auth()
 	resp2 := request.do() or {
-		println('Retry failed again')
+		eprintln('Retry failed again')
 		exit(1)
 	}
 	return resp2
@@ -211,12 +209,12 @@ pub fn (mut l Login) sync(data string) !string {
 		header: h
 	}
 	os.write_file(@FILE + '_api_retry_cache.json', data) or {
-		// println('unable to create last sync log file - reason: ' + err.str())
+		// eprintln('unable to create last sync log file - reason: ' + err.str())
 	}
 	resp := request.do() or {
-		println('Unable to make HTTP sync request to shop')
-		println(err)
-		println('Retrying ...')
+		eprintln('Unable to make HTTP sync request to shop')
+		eprintln(err)
+		eprintln('Retrying ...')
 		time.sleep(60 * time.second)
 		request.do() or {
 			eprintln('sync request also failed on retry - error: ${err} - giving up')
@@ -224,7 +222,7 @@ pub fn (mut l Login) sync(data string) !string {
 		}
 	}
 	if resp.status_code != 204 && resp.status_code != 200 {
-		// println('Error response from shop at sync - statuscode: ${resp.status_code}')
+		// eprintln('Error response from shop at sync - statuscode: ${resp.status_code}')
 		if resp.body.contains('"source":{"pointer":') {
 			e := json.decode(ShopResponseSyncError, resp.body) or { return error(resp.body) }
 			pos := data[1..].index('{') or { -1 }
@@ -235,20 +233,20 @@ pub fn (mut l Login) sync(data string) !string {
 				error_source_array := e.errors[0].source.pointer.split('/')
 				if error_source_array.len > 1 && payload.payload.len > 0 {
 					error_item_nr := error_source_array[2]
-					println('Error record:')
-					println(payload.payload[error_item_nr.int()]) // todo - figure out why this doesn't print nested vars
+					eprintln('Error record:')
+					eprintln(payload.payload[error_item_nr.int()]) // todo - figure out why this doesn't print nested vars
 				}
 			}
 		} else {
-			println('Error from Shop at sync/post - statuscode: ${resp.status_code} - response from shop:')
-			println(resp.body)
-			println('Retrying ...')
+			eprintln('Error from Shop at sync/post - statuscode: ${resp.status_code} - response from shop:')
+			eprintln(resp.body)
+			eprintln('Retrying ...')
 			time.sleep(60 * time.second)
 			l.auth()
 			resp2 := request.do() or {
-				println('Unable to make HTTP sync request to shop on retry')
-				println(err)
-				println('Retrying ...')
+				eprintln('Unable to make HTTP sync request to shop on retry')
+				eprintln(err)
+				eprintln('Retrying ...')
 				time.sleep(60 * time.second)
 				request.do() or {
 					eprintln('sync request also failed on retry - error: ${err} - giving up')
@@ -256,7 +254,7 @@ pub fn (mut l Login) sync(data string) !string {
 				}
 			}
 			if resp2.status_code != 204 && resp2.status_code != 200 {
-				println('Error response from shop at sync retry - statuscode: ${resp2.status_code}')
+				eprintln('Error response from shop at sync retry - statuscode: ${resp2.status_code}')
 				return error(resp2.body)
 			}
 			return resp2.body
@@ -277,16 +275,16 @@ pub fn (mut l Login) sync_upsert(entity string, data []string) {
 		sync_data := '{"v-sync-${entity}":{"entity":"${entity}","action":"upsert","payload":[' +
 			c.join(',') + ']}}'
 		l.sync(sync_data) or {
-			println('${time.now()} sync upsert failed - error: ${err}')
+			eprintln('${time.now()} sync upsert failed - error: ${err}')
 			// {"errors":[{"code":"40001","status":"500","title":"Internal Server Error","detail":"SQLSTATE[40001]: Serialization failure: 1213 Deadlock found when trying to get lock; try restarting transaction"}]}
 			if err.msg().contains('try restarting transaction') {
-				println('this might be a temporary error caused by updating the same entity multiple times - retrying ...')
+				eprintln('this might be a temporary error caused by updating the same entity multiple times - retrying ...')
 				time.sleep(10 * time.second)
 				l.sync(sync_data) or {
 					eprintln('sync upsert also failed on retry - error: ${err} - giving up')
 					return
 				}
-				println('retry successful')
+				eprintln('retry successful')
 			}
 		}
 	}
@@ -327,7 +325,7 @@ pub fn (mut l Login) get_last_sync() string {
 pub fn (mut l Login) resend_sync() {
 	data := l.get_last_sync()
 	if data == '' {
-		println('no last sync data found')
+		eprintln('no last sync data found')
 		return
 	}
 	l.auth()

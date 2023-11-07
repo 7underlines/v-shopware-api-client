@@ -140,6 +140,7 @@ pub:
 	weight                 int            [omitempty]
 	price                  []Price        [omitempty]
 	cover_id               string         [json: 'coverId'; omitempty]
+	unit_id                string         [json: 'unitId'; omitempty]
 	media                  []Media        [omitempty]
 	custom_fields          CustomFields   [json: 'customFields'; omitempty]
 	ean                    string         [omitempty]

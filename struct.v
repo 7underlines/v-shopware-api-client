@@ -118,9 +118,11 @@ pub struct Category {
 }
 
 pub struct Manufacturer {
-	id   string
-	name string [omitempty]
-	link string [omitempty]
+	id          string
+	name        string [omitempty]
+	link        string [omitempty]
+	description string [omitempty]
+	media_id    string [json: mediaId; omitempty]
 }
 
 pub struct Unit {

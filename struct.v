@@ -149,7 +149,7 @@ pub:
 	price                  []Price        [omitempty]
 	cover_id               string         [json: 'coverId'; omitempty]
 	unit_id                string         [json: 'unitId'; omitempty]
-	media                  []Media        [omitempty]
+	media                  []ProductMedia [omitempty]
 	custom_fields          CustomFields   [json: 'customFields'; omitempty]
 	ean                    string         [omitempty]
 	meta_title             string         [json: 'metaTitle'; omitempty]
@@ -157,6 +157,13 @@ pub:
 	reference_unit         f64            [json: 'referenceUnit'; omitempty]
 	purchase_unit          f64            [json: 'purchaseUnit'; omitempty]
 	max_purchase           int            [json: 'maxPurchase'; omitempty]
+}
+
+pub struct ProductMedia {
+pub:
+	id       string
+	position int
+	media    Media
 }
 
 pub struct Id {
@@ -182,7 +189,8 @@ pub struct Price {
 	linked      bool = true
 }
 
-struct Media {
+pub struct Media {
+pub:
 	id              string [omitempty]
 	media_folder_id string [json: 'mediaFolderId'; omitempty]
 }

@@ -123,6 +123,12 @@ pub struct Manufacturer {
 	link string [omitempty]
 }
 
+pub struct Unit {
+	id         string
+	name       string [omitempty]
+	short_code string [json: 'shortCode'; omitempty]
+}
+
 pub struct Product {
 pub:
 	id                     string

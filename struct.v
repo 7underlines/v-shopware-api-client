@@ -122,7 +122,7 @@ pub struct Manufacturer {
 	name        string [omitempty]
 	link        string [omitempty]
 	description string [omitempty]
-	media       Id     [omitempty]
+	media       Media  [omitempty]
 }
 
 pub struct Unit {

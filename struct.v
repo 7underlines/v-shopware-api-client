@@ -197,7 +197,7 @@ pub:
 
 pub struct Tax {
 	id       string [omitempty]
-	name     string [omitempty]
+	name     f64    [omitempty]
 	tax_rate string [json: 'taxRate'; omitempty]
 }
 

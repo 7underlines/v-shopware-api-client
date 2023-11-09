@@ -118,6 +118,7 @@ pub struct Category {
 }
 
 pub struct Manufacturer {
+pub mut:
 	id          string
 	name        string [omitempty]
 	link        string [omitempty]
@@ -154,6 +155,7 @@ pub:
 	ean                    string         [omitempty]
 	meta_title             string         [json: 'metaTitle'; omitempty]
 	meta_description       string         [json: 'metaDescription'; omitempty]
+	parent_id              string         [json: 'parentId'; omitempty]
 	reference_unit         f64            [json: 'referenceUnit'; omitempty]
 	purchase_unit          f64            [json: 'purchaseUnit'; omitempty]
 	max_purchase           int            [json: 'maxPurchase'; omitempty]

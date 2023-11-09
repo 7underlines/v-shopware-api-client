@@ -116,7 +116,7 @@ pub fn (mut l Login) update_media_from_url(media_id string, url string) {
 	ext := os.file_ext(name)
 	filename_without_ext := name.substr(0, name.len - ext.len)
 	resp := l.fetch(.post, '_action/media/${media_id}/upload?extension=${ext.replace('.',
-		'')}&fileName=${strip(filename_without_ext)}', '{"url":"${url}"}')
+		'')}&fileName=${strip(filename_without_ext)}', '{"url":"${url.replace(' ', '%20')}"}')
 	if resp.status_code != 204 {
 		println('Error response from shop at file_upload for mediaId ${media_id} - url ${url} - statuscode ${resp.status_code} - response from shop:')
 		println(resp.body)

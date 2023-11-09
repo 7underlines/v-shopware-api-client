@@ -195,6 +195,12 @@ pub:
 	media_folder_id string [json: 'mediaFolderId'; omitempty]
 }
 
+pub struct Tax {
+	id       string [omitempty]
+	name     string [omitempty]
+	tax_rate string [json: 'taxRate'; omitempty]
+}
+
 pub struct CustomFields {
 	custom_import_field1 string [omitempty]
 	custom_import_field2 string [omitempty]

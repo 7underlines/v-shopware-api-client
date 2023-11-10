@@ -43,6 +43,7 @@ pub fn strip(s string) string {
 	r = r.replace('|', '')
 	r = r.replace('&', '')
 	r = r.replace('*', '')
+	r = r.replace('+', '')
 	return r
 }
 

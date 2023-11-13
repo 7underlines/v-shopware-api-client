@@ -161,10 +161,10 @@ pub mut:
 	reference_unit         f64                    [json: 'referenceUnit'; omitempty]
 	purchase_unit          f64                    [json: 'purchaseUnit'; omitempty]
 	max_purchase           int                    [json: 'maxPurchase'; omitempty]
-	configurator_settings  []ConfiguratorSettings [json: 'ConfiguratorSettings'; omitempty]
+	configurator_settings  []ConfiguratorSettings [json: 'configuratorSettings'; omitempty]
 }
 
-pub struct ConfiguratorSettings {
+pub struct ConfiguratorSetting {
 pub mut:
 	id        string [omitempty]
 	option_id string [json: 'optionId'; omitempty]
@@ -182,14 +182,14 @@ pub mut:
 	id string [omitempty]
 }
 
-pub struct Visibilities {
+pub struct Visibility {
 pub mut:
 	id               string [omitempty]
 	sales_channel_id string [json: 'salesChannelId'; omitempty]
 	visibility       int    [omitempty] = 30
 }
 
-pub struct Options {
+pub struct Option {
 pub mut:
 	id       string [omitempty]
 	name     string [omitempty]
@@ -217,7 +217,7 @@ pub mut:
 	tax_rate f64    [json: 'taxRate'; omitempty]
 }
 
-pub struct CustomFields {
+pub struct CustomField {
 pub mut:
 	custom_import_field1 string [omitempty]
 	custom_import_field2 string [omitempty]

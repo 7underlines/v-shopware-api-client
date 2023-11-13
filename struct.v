@@ -143,17 +143,17 @@ pub mut:
 	description            string                 [omitempty]
 	manufacturer           Id                     [omitempty]
 	categories             []Id                   [omitempty]
-	visibilities           []Visibilities         [omitempty]
+	visibilities           []Visibility         [omitempty]
 	tax_id                 string                 [json: 'taxId'; omitempty]
 	keywords               string                 [omitempty]
 	custom_search_keywords []string               [json: 'customSearchKeywords'; omitempty]
-	options                []Options              [omitempty]
+	options                []Option_              [omitempty]
 	weight                 int                    [omitempty]
 	price                  []Price                [omitempty]
 	cover_id               string                 [json: 'coverId'; omitempty]
 	unit_id                string                 [json: 'unitId'; omitempty]
 	media                  []ProductMedia         [omitempty]
-	custom_fields          CustomFields           [json: 'customFields'; omitempty]
+	custom_fields          CustomField           [json: 'customFields'; omitempty]
 	ean                    string                 [omitempty]
 	meta_title             string                 [json: 'metaTitle'; omitempty]
 	meta_description       string                 [json: 'metaDescription'; omitempty]
@@ -161,7 +161,7 @@ pub mut:
 	reference_unit         f64                    [json: 'referenceUnit'; omitempty]
 	purchase_unit          f64                    [json: 'purchaseUnit'; omitempty]
 	max_purchase           int                    [json: 'maxPurchase'; omitempty]
-	configurator_settings  []ConfiguratorSettings [json: 'configuratorSettings'; omitempty]
+	configurator_settings  []ConfiguratorSetting [json: 'configuratorSettings'; omitempty]
 }
 
 pub struct ConfiguratorSetting {
@@ -189,7 +189,7 @@ pub mut:
 	visibility       int    [omitempty] = 30
 }
 
-pub struct Option {
+pub struct Option_ { // Option is a reserved word
 pub mut:
 	id       string [omitempty]
 	name     string [omitempty]

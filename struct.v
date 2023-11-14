@@ -137,30 +137,30 @@ pub mut:
 pub struct Product {
 pub mut:
 	id                     string
-	name                   string                 [omitempty]
-	stock                  ?int                   [omitempty]
-	product_number         string                 [json: 'productNumber'; omitempty]
-	description            string                 [omitempty]
-	manufacturer           Id                     [omitempty]
-	categories             []Id                   [omitempty]
-	visibilities           []Visibility         [omitempty]
-	tax_id                 string                 [json: 'taxId'; omitempty]
-	keywords               string                 [omitempty]
-	custom_search_keywords []string               [json: 'customSearchKeywords'; omitempty]
-	options                []Option_              [omitempty]
-	weight                 int                    [omitempty]
-	price                  []Price                [omitempty]
-	cover_id               string                 [json: 'coverId'; omitempty]
-	unit_id                string                 [json: 'unitId'; omitempty]
-	media                  []ProductMedia         [omitempty]
+	name                   string                [omitempty]
+	stock                  ?int                  [omitempty]
+	product_number         string                [json: 'productNumber'; omitempty]
+	description            string                [omitempty]
+	manufacturer           Id                    [omitempty]
+	categories             []Id                  [omitempty]
+	visibilities           []Visibility          [omitempty]
+	tax_id                 string                [json: 'taxId'; omitempty]
+	keywords               string                [omitempty]
+	custom_search_keywords []string              [json: 'customSearchKeywords'; omitempty]
+	options                []Option_             [omitempty]
+	weight                 int                   [omitempty]
+	price                  []Price               [omitempty]
+	cover_id               string                [json: 'coverId'; omitempty]
+	unit_id                string                [json: 'unitId'; omitempty]
+	media                  []ProductMedia        [omitempty]
 	custom_fields          CustomField           [json: 'customFields'; omitempty]
-	ean                    string                 [omitempty]
-	meta_title             string                 [json: 'metaTitle'; omitempty]
-	meta_description       string                 [json: 'metaDescription'; omitempty]
-	parent_id              string                 [json: 'parentId'; omitempty]
-	reference_unit         f64                    [json: 'referenceUnit'; omitempty]
-	purchase_unit          f64                    [json: 'purchaseUnit'; omitempty]
-	max_purchase           int                    [json: 'maxPurchase'; omitempty]
+	ean                    string                [omitempty]
+	meta_title             string                [json: 'metaTitle'; omitempty]
+	meta_description       string                [json: 'metaDescription'; omitempty]
+	parent_id              string                [json: 'parentId'; omitempty]
+	reference_unit         f64                   [json: 'referenceUnit'; omitempty]
+	purchase_unit          f64                   [json: 'purchaseUnit'; omitempty]
+	max_purchase           int                   [json: 'maxPurchase'; omitempty]
 	configurator_settings  []ConfiguratorSetting [json: 'configuratorSettings'; omitempty]
 }
 
@@ -215,6 +215,12 @@ pub mut:
 	id       string [omitempty]
 	name     string [omitempty]
 	tax_rate f64    [json: 'taxRate'; omitempty]
+}
+
+pub struct PropertyGroup {
+pub mut:
+	id   string [omitempty]
+	name string [omitempty]
 }
 
 pub struct CustomField {

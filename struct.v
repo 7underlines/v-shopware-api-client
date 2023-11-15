@@ -75,6 +75,7 @@ pub:
 	payment_method_id      string            [json: paymentMethodId]
 	name                   string
 	parent_id              string            [json: parentId]
+	cms_page_id            string            [json: cmsPageId]
 }
 
 struct ErrorDetail {

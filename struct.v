@@ -215,7 +215,7 @@ pub struct Tax {
 pub mut:
 	id       string [omitempty]
 	name     string [omitempty]
-	tax_rate f64    [json: 'taxRate'; omitempty]
+	tax_rate ?f64   [json: 'taxRate'; omitempty]
 }
 
 pub struct PropertyGroup {

@@ -46,7 +46,7 @@ pub fn (mut l Login) auth() bool {
 		return false
 	}
 	if resp.status_code != 200 {
-		eprintln('Shop auth failed - statuscode: ${resp.status_code} - response from shop:')
+		eprintln('Shop auth failed - url: ${url} - statuscode: ${resp.status_code} - response from shop:')
 		eprintln(resp.body)
 	}
 	token := json.decode(AuthToken, resp.body) or {

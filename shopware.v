@@ -198,7 +198,7 @@ pub fn (mut l Login) sync(data string) !string {
 		key: .authorization
 		value: 'Bearer ${l.token.access_token}'
 	})
-	h.add_custom('single-operation', '1') or { panic(err) }
+	h.add_custom('single-operation', '1') or { return err }
 	// h.add_custom('indexing-behavior', 'use-queue-indexing') or {
 	// 	panic(err)
 	// }
@@ -222,7 +222,7 @@ pub fn (mut l Login) sync(data string) !string {
 		time.sleep(60 * time.second)
 		request.do() or {
 			eprintln('sync request also failed on retry - error: ${err} - giving up')
-			return error(err.msg())
+			return err
 		}
 	}
 	if resp.status_code != 204 && resp.status_code != 200 {
@@ -254,7 +254,7 @@ pub fn (mut l Login) sync(data string) !string {
 				time.sleep(60 * time.second)
 				request.do() or {
 					eprintln('sync request also failed on retry - error: ${err} - giving up')
-					return error(err.msg())
+					return err
 				}
 			}
 			if resp2.status_code != 204 && resp2.status_code != 200 {

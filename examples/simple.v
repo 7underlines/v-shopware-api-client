@@ -16,7 +16,7 @@ fn main() {
 		client_secret: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
 	}
 	response := sw_api.get('product?limit=1')
-	products_response := json.decode(ShopResponse, response) or { panic(err) }
+	products_response := json.decode(ShopResponse, response) or { ShopResponse{} }
 	for product in products_response.data {
 		println(product.id)
 	}

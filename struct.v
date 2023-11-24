@@ -39,7 +39,7 @@ struct ShopResponse {
 pub:
 	errors []ErrorDetail
 	data   []ShopResponseData
-	d      ShopResponseData   [json: data]
+	d      ShopResponseData   @[json: data]
 	meta   ShopResponseMeta
 }
 
@@ -64,18 +64,18 @@ pub:
 
 pub struct Attributes {
 pub:
-	media_id               string            [json: mediaId]
-	cover_id               string            [json: coverId]
-	child_count            int               [json: childCount]
+	media_id               string            @[json: mediaId]
+	cover_id               string            @[json: coverId]
+	child_count            int               @[json: childCount]
 	stock                  int
-	custom_fields          map[string]string [json: customFields]
+	custom_fields          map[string]string @[json: customFields]
 	active                 bool
-	product_number         string            [json: productNumber]
-	custom_search_keywords []string          [json: customSearchKeywords]
-	payment_method_id      string            [json: paymentMethodId]
+	product_number         string            @[json: productNumber]
+	custom_search_keywords []string          @[json: customSearchKeywords]
+	payment_method_id      string            @[json: paymentMethodId]
 	name                   string
-	parent_id              string            [json: parentId]
-	cms_page_id            string            [json: cmsPageId]
+	parent_id              string            @[json: parentId]
+	cms_page_id            string            @[json: cmsPageId]
 }
 
 struct ErrorDetail {
@@ -114,61 +114,61 @@ struct SyncPayload {
 pub struct Category {
 pub mut:
 	id          string
-	name        string [omitempty]
-	parent_id   string [json: parentId; omitempty]
-	cms_page_id string [json: cmsPageId]
+	name        string @[omitempty]
+	parent_id   string @[json: parentId; omitempty]
+	cms_page_id string @[json: cmsPageId]
 }
 
 pub struct Manufacturer {
 pub mut:
 	id          string
-	name        string [omitempty]
-	link        string [omitempty]
-	description string [omitempty]
-	media       Media  [omitempty]
+	name        string @[omitempty]
+	link        string @[omitempty]
+	description string @[omitempty]
+	media       Media  @[omitempty]
 }
 
 pub struct Unit {
 pub mut:
 	id         string
-	name       string [omitempty]
-	short_code string [json: 'shortCode'; omitempty]
+	name       string @[omitempty]
+	short_code string @[json: 'shortCode'; omitempty]
 }
 
 pub struct Product {
 pub mut:
 	id                     string
-	name                   string                [omitempty]
-	stock                  ?int                  [omitempty]
-	product_number         string                [json: 'productNumber'; omitempty]
-	description            string                [omitempty]
-	manufacturer           Id                    [omitempty]
-	categories             []Id                  [omitempty]
-	visibilities           []Visibility          [omitempty]
-	tax_id                 string                [json: 'taxId'; omitempty]
-	keywords               string                [omitempty]
-	custom_search_keywords []string              [json: 'customSearchKeywords'; omitempty]
-	options                []Option_             [omitempty]
-	weight                 int                   [omitempty]
-	price                  []Price               [omitempty]
-	cover_id               string                [json: 'coverId'; omitempty]
-	unit_id                string                [json: 'unitId'; omitempty]
-	media                  []ProductMedia        [omitempty]
-	custom_fields          CustomField           [json: 'customFields'; omitempty]
-	ean                    string                [omitempty]
-	meta_title             string                [json: 'metaTitle'; omitempty]
-	meta_description       string                [json: 'metaDescription'; omitempty]
-	parent_id              string                [json: 'parentId'; omitempty]
-	reference_unit         f64                   [json: 'referenceUnit'; omitempty]
-	purchase_unit          f64                   [json: 'purchaseUnit'; omitempty]
-	max_purchase           int                   [json: 'maxPurchase'; omitempty]
-	configurator_settings  []ConfiguratorSetting [json: 'configuratorSettings'; omitempty]
+	name                   string                @[omitempty]
+	stock                  ?int                  @[omitempty]
+	product_number         string                @[json: 'productNumber'; omitempty]
+	description            string                @[omitempty]
+	manufacturer           Id                    @[omitempty]
+	categories             []Id                  @[omitempty]
+	visibilities           []Visibility          @[omitempty]
+	tax_id                 string                @[json: 'taxId'; omitempty]
+	keywords               string                @[omitempty]
+	custom_search_keywords []string              @[json: 'customSearchKeywords'; omitempty]
+	options                []Option_             @[omitempty]
+	weight                 int                   @[omitempty]
+	price                  []Price               @[omitempty]
+	cover_id               string                @[json: 'coverId'; omitempty]
+	unit_id                string                @[json: 'unitId'; omitempty]
+	media                  []ProductMedia        @[omitempty]
+	custom_fields          CustomField           @[json: 'customFields'; omitempty]
+	ean                    string                @[omitempty]
+	meta_title             string                @[json: 'metaTitle'; omitempty]
+	meta_description       string                @[json: 'metaDescription'; omitempty]
+	parent_id              string                @[json: 'parentId'; omitempty]
+	reference_unit         f64                   @[json: 'referenceUnit'; omitempty]
+	purchase_unit          f64                   @[json: 'purchaseUnit'; omitempty]
+	max_purchase           int                   @[json: 'maxPurchase'; omitempty]
+	configurator_settings  []ConfiguratorSetting @[json: 'configuratorSettings'; omitempty]
 }
 
 pub struct ConfiguratorSetting {
 pub mut:
-	id        string [omitempty]
-	option_id string [json: 'optionId'; omitempty]
+	id        string @[omitempty]
+	option_id string @[json: 'optionId'; omitempty]
 }
 
 pub struct ProductMedia {
@@ -180,59 +180,59 @@ pub mut:
 
 pub struct Id {
 pub mut:
-	id string [omitempty]
+	id string @[omitempty]
 }
 
 pub struct Visibility {
 pub mut:
-	id               string [omitempty]
-	sales_channel_id string [json: 'salesChannelId'; omitempty]
-	visibility       int    [omitempty] = 30
+	id               string @[omitempty]
+	sales_channel_id string @[json: 'salesChannelId'; omitempty]
+	visibility       int = 30    @[omitempty]
 }
 
 pub struct Option_ { // Option is a reserved word
 pub mut:
-	id       string [omitempty]
-	name     string [omitempty]
-	group_id string [json: 'groupId'; omitempty]
+	id       string @[omitempty]
+	name     string @[omitempty]
+	group_id string @[json: 'groupId'; omitempty]
 }
 
 pub struct Price {
 pub mut:
 	net         f64
 	gross       f64
-	currency_id string [json: 'currencyId'] = 'b7d2554b0ce847cd82f3ac9bd1c0dfca'
+	currency_id string = 'b7d2554b0ce847cd82f3ac9bd1c0dfca' @[json: 'currencyId']
 	linked      bool = true
 }
 
 pub struct Media {
 pub:
-	id              string [omitempty]
-	media_folder_id string [json: 'mediaFolderId'; omitempty]
+	id              string @[omitempty]
+	media_folder_id string @[json: 'mediaFolderId'; omitempty]
 }
 
 pub struct Tax {
 pub mut:
-	id       string [omitempty]
-	name     string [omitempty]
-	tax_rate ?f64   [json: 'taxRate'; omitempty]
+	id       string @[omitempty]
+	name     string @[omitempty]
+	tax_rate ?f64   @[json: 'taxRate'; omitempty]
 }
 
 pub struct PropertyGroup {
 pub mut:
-	id   string [omitempty]
-	name string [omitempty]
+	id   string @[omitempty]
+	name string @[omitempty]
 }
 
 pub struct CustomField {
 pub mut:
-	custom_import_field1 string [omitempty]
-	custom_import_field2 string [omitempty]
-	custom_import_field3 string [omitempty]
-	custom_import_field4 string [omitempty]
-	custom_import_field5 string [omitempty]
-	custom_import_field6 string [omitempty]
-	custom_import_field7 string [omitempty]
-	custom_import_field8 string [omitempty]
-	custom_import_field9 string [omitempty]
+	custom_import_field1 string @[omitempty]
+	custom_import_field2 string @[omitempty]
+	custom_import_field3 string @[omitempty]
+	custom_import_field4 string @[omitempty]
+	custom_import_field5 string @[omitempty]
+	custom_import_field6 string @[omitempty]
+	custom_import_field7 string @[omitempty]
+	custom_import_field8 string @[omitempty]
+	custom_import_field9 string @[omitempty]
 }

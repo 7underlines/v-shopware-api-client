@@ -80,7 +80,7 @@ fn main() {
 		client_id: 'XXXXXXXXXXXXXXXXXXXXXXXXXX' // get this from Shopware 6 backend Settings->System->Integrations
 		client_secret: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
 	}
-	response := sw_api.get('product')
+	response := sw_api.get('product?limit=1')
 	response_data := json.decode(ShopResponse, response) or { ShopResponse{} }
 	for product in response_data.data {
 		println(product.id)

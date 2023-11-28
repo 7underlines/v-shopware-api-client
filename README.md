@@ -92,8 +92,14 @@ fn main() {
 
 ## Contents
 - [date_time](#date_time)
+- [decode](#decode)
 - [encode](#encode)
 - [strip](#strip)
+- [Attributes](#Attributes)
+- [Category](#Category)
+- [ConfiguratorSetting](#ConfiguratorSetting)
+- [CustomField](#CustomField)
+- [Id](#Id)
 - [Login](#Login)
   - [add_media_to_product](#add_media_to_product)
   - [auth](#auth)
@@ -105,6 +111,8 @@ fn main() {
   - [find_property_by_name](#find_property_by_name)
   - [find_subcategory_by_name](#find_subcategory_by_name)
   - [get](#get)
+  - [get_default_category](#get_default_category)
+  - [get_default_cms_page](#get_default_cms_page)
   - [get_default_media_folder](#get_default_media_folder)
   - [get_default_payment_method](#get_default_payment_method)
   - [get_default_sales_channel](#get_default_sales_channel)
@@ -121,14 +129,31 @@ fn main() {
   - [update_media_from_url](#update_media_from_url)
   - [upload](#upload)
   - [upload_file](#upload_file)
+- [Manufacturer](#Manufacturer)
+- [Media](#Media)
+- [Option_](#Option_)
+- [Price](#Price)
+- [Product](#Product)
+- [ProductMedia](#ProductMedia)
+- [PropertyGroup](#PropertyGroup)
 - [ShopResponseData](#ShopResponseData)
+- [Tax](#Tax)
+- [Unit](#Unit)
+- [Visibility](#Visibility)
 
 ## date_time
 ```v
 fn date_time() string
 ```
-
 current time formatted for Shopware date time custom fields eg. "2022-01-16T12:00:00+00:00"
+
+[[Return to contents]](#Contents)
+
+## decode
+```v
+fn decode(data string) map[string]json2.Any
+```
+
 
 [[Return to contents]](#Contents)
 
@@ -136,7 +161,6 @@ current time formatted for Shopware date time custom fields eg. "2022-01-16T12:0
 ```v
 fn encode(s string) string
 ```
-
 Percent-encoding reserved characters eg. for filter parameters
 
 [[Return to contents]](#Contents)
@@ -145,8 +169,85 @@ Percent-encoding reserved characters eg. for filter parameters
 ```v
 fn strip(s string) string
 ```
-
 strip not allowed chars
+
+[[Return to contents]](#Contents)
+
+## Attributes
+```v
+struct Attributes {
+pub:
+	media_id               string            @[json: mediaId]
+	cover_id               string            @[json: coverId]
+	child_count            int               @[json: childCount]
+	stock                  int
+	custom_fields          map[string]string @[json: customFields]
+	active                 bool
+	product_number         string            @[json: productNumber]
+	custom_search_keywords []string          @[json: customSearchKeywords]
+	payment_method_id      string            @[json: paymentMethodId]
+	name                   string
+	parent_id              string            @[json: parentId]
+	cms_page_id            string            @[json: cmsPageId]
+}
+```
+
+
+[[Return to contents]](#Contents)
+
+## Category
+```v
+struct Category {
+pub mut:
+	id          string
+	name        string @[omitempty]
+	parent_id   string @[json: parentId; omitempty]
+	cms_page_id string @[json: cmsPageId]
+}
+```
+
+
+[[Return to contents]](#Contents)
+
+## ConfiguratorSetting
+```v
+struct ConfiguratorSetting {
+pub mut:
+	id        string @[omitempty]
+	option_id string @[json: 'optionId'; omitempty]
+}
+```
+
+
+[[Return to contents]](#Contents)
+
+## CustomField
+```v
+struct CustomField {
+pub mut:
+	custom_import_field1 string @[omitempty]
+	custom_import_field2 string @[omitempty]
+	custom_import_field3 string @[omitempty]
+	custom_import_field4 string @[omitempty]
+	custom_import_field5 string @[omitempty]
+	custom_import_field6 string @[omitempty]
+	custom_import_field7 string @[omitempty]
+	custom_import_field8 string @[omitempty]
+	custom_import_field9 string @[omitempty]
+}
+```
+
+
+[[Return to contents]](#Contents)
+
+## Id
+```v
+struct Id {
+pub mut:
+	id string @[omitempty]
+}
+```
+
 
 [[Return to contents]](#Contents)
 
@@ -170,7 +271,6 @@ pub mut:
 ```v
 fn (mut l Login) add_media_to_product(media_id string, product_id string, set_as_cover bool, position int)
 ```
-
 add_media_to_product position should begin with 0
 
 [[Return to contents]](#Contents)
@@ -179,7 +279,6 @@ add_media_to_product position should begin with 0
 ```v
 fn (mut l Login) auth() bool
 ```
-
 auth get's called automatic and renews the oauth token if needed
 
 [[Return to contents]](#Contents)
@@ -248,6 +347,22 @@ fn (mut l Login) get(endpoint string) string
 
 [[Return to contents]](#Contents)
 
+## get_default_category
+```v
+fn (mut l Login) get_default_category() string
+```
+
+
+[[Return to contents]](#Contents)
+
+## get_default_cms_page
+```v
+fn (mut l Login) get_default_cms_page() string
+```
+
+
+[[Return to contents]](#Contents)
+
 ## get_default_media_folder
 ```v
 fn (mut l Login) get_default_media_folder() string
@@ -284,7 +399,6 @@ fn (mut l Login) get_default_tax() string
 ```v
 fn (mut l Login) get_last_sync() string
 ```
-
 get_last_sync returns the last sync payload
 
 [[Return to contents]](#Contents)
@@ -309,7 +423,6 @@ fn (mut l Login) patch(endpoint string, data string)
 ```v
 fn (mut l Login) post(endpoint string, data string) string
 ```
-
 post returns the id of the created content on success
 
 [[Return to contents]](#Contents)
@@ -318,7 +431,6 @@ post returns the id of the created content on success
 ```v
 fn (mut l Login) resend_sync()
 ```
-
 resend_sync sends the last sync operation (sync saves data into a file) again to the shop api - useful for debugging or temporary errors
 
 [[Return to contents]](#Contents)
@@ -335,7 +447,6 @@ fn (mut l Login) search(entity string, data string) string
 ```v
 fn (mut l Login) sync(data string) !string
 ```
-
 sync API is an add-on to the Admin API that allows you to perform multiple write operations (creating/updating and deleting) simultaneously
 
 [[Return to contents]](#Contents)
@@ -344,7 +455,6 @@ sync API is an add-on to the Admin API that allows you to perform multiple write
 ```v
 fn (mut l Login) sync_delete(entity string, data []string)
 ```
-
 sync_delete is a shorthand function for sync with data chunking for large arrays
 
 [[Return to contents]](#Contents)
@@ -353,7 +463,6 @@ sync_delete is a shorthand function for sync with data chunking for large arrays
 ```v
 fn (mut l Login) sync_upsert(entity string, data []string)
 ```
-
 sync_upsert is a shorthand function for sync with data chunking for large arrays
 
 [[Return to contents]](#Contents)
@@ -362,7 +471,6 @@ sync_upsert is a shorthand function for sync with data chunking for large arrays
 ```v
 fn (mut l Login) update_media_from_url(media_id string, url string)
 ```
-
 Attach resource data to the media object from the given url
 
 [[Return to contents]](#Contents)
@@ -371,7 +479,6 @@ Attach resource data to the media object from the given url
 ```v
 fn (mut l Login) upload(file_url string, name string, media_folder_id string) !string
 ```
-
 upload returns the mediaId of the uploaded file on success
 
 [[Return to contents]](#Contents)
@@ -380,8 +487,122 @@ upload returns the mediaId of the uploaded file on success
 ```v
 fn (mut l Login) upload_file(media_id string, name string, _ext string, data string) !
 ```
-
 upload_file via binary blob
+
+[[Return to contents]](#Contents)
+
+## Manufacturer
+```v
+struct Manufacturer {
+pub mut:
+	id          string
+	name        string @[omitempty]
+	link        string @[omitempty]
+	description string @[omitempty]
+	media       Media  @[omitempty]
+}
+```
+
+
+[[Return to contents]](#Contents)
+
+## Media
+```v
+struct Media {
+pub:
+	id              string @[omitempty]
+	media_folder_id string @[json: 'mediaFolderId'; omitempty]
+}
+```
+
+
+[[Return to contents]](#Contents)
+
+## Option_
+```v
+struct Option_ { // Option is a reserved word
+pub mut:
+	id       string @[omitempty]
+	name     string @[omitempty]
+	group_id string @[json: 'groupId'; omitempty]
+}
+```
+
+
+[[Return to contents]](#Contents)
+
+## Price
+```v
+struct Price {
+pub mut:
+	net         f64
+	gross       f64
+	currency_id string = 'b7d2554b0ce847cd82f3ac9bd1c0dfca' @[json: 'currencyId']
+	linked      bool = true
+}
+```
+
+
+[[Return to contents]](#Contents)
+
+## Product
+```v
+struct Product {
+pub mut:
+	id                     string
+	name                   string                @[omitempty]
+	stock                  ?int                  @[omitempty]
+	product_number         string                @[json: 'productNumber'; omitempty]
+	description            string                @[omitempty]
+	manufacturer           Id                    @[omitempty]
+	categories             []Id                  @[omitempty]
+	visibilities           []Visibility          @[omitempty]
+	tax_id                 string                @[json: 'taxId'; omitempty]
+	keywords               string                @[omitempty]
+	custom_search_keywords []string              @[json: 'customSearchKeywords'; omitempty]
+	options                []Option_             @[omitempty]
+	weight                 int                   @[omitempty]
+	price                  []Price               @[omitempty]
+	cover_id               string                @[json: 'coverId'; omitempty]
+	unit_id                string                @[json: 'unitId'; omitempty]
+	media                  []ProductMedia        @[omitempty]
+	custom_fields          CustomField           @[json: 'customFields'; omitempty]
+	ean                    string                @[omitempty]
+	meta_title             string                @[json: 'metaTitle'; omitempty]
+	meta_description       string                @[json: 'metaDescription'; omitempty]
+	parent_id              string                @[json: 'parentId'; omitempty]
+	reference_unit         f64                   @[json: 'referenceUnit'; omitempty]
+	purchase_unit          f64                   @[json: 'purchaseUnit'; omitempty]
+	max_purchase           int                   @[json: 'maxPurchase'; omitempty]
+	configurator_settings  []ConfiguratorSetting @[json: 'configuratorSettings'; omitempty]
+}
+```
+
+
+[[Return to contents]](#Contents)
+
+## ProductMedia
+```v
+struct ProductMedia {
+pub mut:
+	id       string
+	position int
+	media    Media
+}
+```
+
+
+[[Return to contents]](#Contents)
+
+## PropertyGroup
+```v
+struct PropertyGroup {
+pub mut:
+	id   string @[omitempty]
+	name string @[omitempty]
+}
+```
+
 
 [[Return to contents]](#Contents)
 
@@ -397,7 +618,46 @@ pub:
 
 [[Return to contents]](#Contents)
 
-#### Powered by vdoc. Generated on: 14 Mar 2023 12:37:36
+## Tax
+```v
+struct Tax {
+pub mut:
+	id       string @[omitempty]
+	name     string @[omitempty]
+	tax_rate ?f64   @[json: 'taxRate'; omitempty]
+}
+```
+
+
+[[Return to contents]](#Contents)
+
+## Unit
+```v
+struct Unit {
+pub mut:
+	id         string
+	name       string @[omitempty]
+	short_code string @[json: 'shortCode'; omitempty]
+}
+```
+
+
+[[Return to contents]](#Contents)
+
+## Visibility
+```v
+struct Visibility {
+pub mut:
+	id               string @[omitempty]
+	sales_channel_id string @[json: 'salesChannelId'; omitempty]
+	visibility       int = 30    @[omitempty]
+}
+```
+
+
+[[Return to contents]](#Contents)
+
+#### Powered by vdoc. Generated on: 28 Nov 2023 11:52:49
 
 
 

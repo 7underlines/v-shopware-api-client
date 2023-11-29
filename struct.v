@@ -1,9 +1,7 @@
 module shopwareac
 
-const (
-	accept_all           = '*/*'
-	default_content_type = 'application/json'
-)
+const accept_all = '*/*'
+const default_content_type = 'application/json'
 
 struct LoginShop {
 	grant_type    string = 'client_credentials'
@@ -117,6 +115,7 @@ pub mut:
 	name        string @[omitempty]
 	parent_id   string @[json: parentId; omitempty]
 	cms_page_id string @[json: cmsPageId]
+	active      ?bool
 }
 
 pub struct Manufacturer {

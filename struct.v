@@ -114,7 +114,7 @@ pub mut:
 	id          string
 	name        string @[omitempty]
 	parent_id   string @[json: parentId; omitempty]
-	cms_page_id string @[json: cmsPageId]
+	cms_page_id string @[json: cmsPageId; omitempty]
 	active      ?bool
 }
 

@@ -96,7 +96,7 @@ pub fn (mut l Login) upload_file(media_id string, name string, _ext string, data
 		return error('HTTP POST request for file_upload for mediaId ${media_id} to shop failed - error: ${err}')
 	}
 	if resp.status_code != 204 {
-		return error('Error response from shop at file_upload for mediaId ${media_id} statuscode: ${resp.status_code} - response from shop: ${resp.body}')
+		return error('Error response from shop at file_upload for mediaId ${media_id} - file extension ${ext} - filename ${name} - filename stripped ${strip(name)} - statuscode: ${resp.status_code} - response from shop: ${resp.body}')
 	}
 }
 

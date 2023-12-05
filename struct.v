@@ -35,10 +35,10 @@ pub:
 
 struct ShopResponse {
 pub:
-	errors []ErrorDetail
-	data   []ShopResponseData
-	d      ShopResponseData   @[json: data]
-	meta   ShopResponseMeta
+	errors   []ErrorDetail
+	data     []ShopResponseData
+	d        ShopResponseData   @[json: data]
+	meta     ShopResponseMeta
 	included []Included
 }
 
@@ -67,20 +67,22 @@ pub:
 	attributes Attributes
 }
 
+type Any = []Any | bool | f64 | map[string]Any | string
+
 pub struct Attributes {
 pub:
-	media_id               string            @[json: mediaId]
-	cover_id               string            @[json: coverId]
-	child_count            int               @[json: childCount]
+	media_id               string         @[json: mediaId]
+	cover_id               string         @[json: coverId]
+	child_count            int            @[json: childCount]
 	stock                  int
-	custom_fields          map[string]string @[json: customFields]
+	custom_fields          map[string]Any @[json: customFields]
 	active                 bool
-	product_number         string            @[json: productNumber]
-	custom_search_keywords []string          @[json: customSearchKeywords]
-	payment_method_id      string            @[json: paymentMethodId]
+	product_number         string         @[json: productNumber]
+	custom_search_keywords []string       @[json: customSearchKeywords]
+	payment_method_id      string         @[json: paymentMethodId]
 	name                   string
-	parent_id              string            @[json: parentId]
-	cms_page_id            string            @[json: cmsPageId]
+	parent_id              string         @[json: parentId]
+	cms_page_id            string         @[json: cmsPageId]
 }
 
 struct ErrorDetail {

@@ -78,6 +78,7 @@ pub:
 	name                   string
 	parent_id              string         @[json: parentId]
 	cms_page_id            string         @[json: cmsPageId]
+	price                  []Price
 }
 
 struct ErrorDetail {

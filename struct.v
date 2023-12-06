@@ -39,13 +39,7 @@ pub:
 	data     []ShopResponseData
 	d        ShopResponseData   @[json: data]
 	meta     ShopResponseMeta
-	included []Included
-}
-
-struct Included {
-	id         string
-	type_      string     @[json: 'type'] // type is a reserved word
-	attributes Attributes
+	included []ShopResponseData
 }
 
 struct ShopResponseSingle {
@@ -64,6 +58,7 @@ struct ShopResponseSyncError {
 pub struct ShopResponseData {
 pub:
 	id         string
+	type_      string     @[json: 'type'] // type is a reserved word
 	attributes Attributes
 }
 

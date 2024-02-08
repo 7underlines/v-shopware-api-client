@@ -80,6 +80,7 @@ pub:
 	cms_page_id            string         @[json: cmsPageId]
 	price                  []Price
 	tax_id                 string         @[json: taxId]
+	breadcrumb             []string
 }
 
 struct ErrorDetail {

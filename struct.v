@@ -81,6 +81,8 @@ pub:
 	price                  []Price
 	tax_id                 string         @[json: taxId]
 	breadcrumb             []string
+	meta_description       string         @[json: metaDescription]
+	meta_title             string         @[json: metaTitle]
 }
 
 struct ErrorDetail {

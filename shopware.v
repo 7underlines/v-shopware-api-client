@@ -198,11 +198,9 @@ pub fn (mut l Login) sync(data string) !string {
 		key: .authorization
 		value: 'Bearer ${l.token.access_token}'
 	})
-	h.add_custom('single-operation', '1') or { return err }
+	h.add_custom('single-operation', '1') or { return err } // hardcoded as of Shopware 6.5.1.0
+	// https://github.com/shopware/shopware/blob/trunk/UPGRADE-6.5.md#sync-api-changes
 	// h.add_custom('indexing-behavior', 'use-queue-indexing') or {
-	// 	panic(err)
-	// }
-	// h.add_custom('fail-on-error', '0') or {
 	// 	panic(err)
 	// }
 	request := http.Request{

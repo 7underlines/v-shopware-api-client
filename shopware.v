@@ -69,7 +69,8 @@ pub fn (mut l Login) get(endpoint string) string {
 	if resp.status_code != 200 && resp.status_code != 404 {
 		eprintln('Problem at fetching data from shop at ${endpoint} - statuscode: ${resp.status_code} - response from shop:')
 		eprintln(resp.body)
-		eprintln('Retry')
+		eprintln('Retry in 60 seconds ...')
+		time.sleep(60 * time.second)
 		resp = l.fetch(.get, endpoint, '')
 		if resp.status_code != 200 {
 			eprintln('Also error on retry')

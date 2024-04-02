@@ -33,7 +33,7 @@ pub fn (mut l Login) upload(file_url string, name string, media_folder_id string
 	if resp.status_code == 204 {
 		location := resp.header.get(.location) or { '' }
 		if location != '' {
-			pos := location.index_last('/') or { -1 }
+			pos := location.last_index('/') or { -1 }
 			return location[pos + 1..]
 		} else {
 			return resp.body

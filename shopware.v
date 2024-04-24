@@ -10,7 +10,7 @@ import arrays
 // auth get's called automatic and renews the oauth token if needed
 pub fn (mut l Login) auth() bool {
 	t := time.now()
-	tu := t.unix_time()
+	tu := t.unix()
 	if l.token.valid_until > tu { // token is still valid, no need to get a new one
 		return true
 	}

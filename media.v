@@ -14,7 +14,8 @@ pub fn (mut l Login) upload(file_url string, name string, media_folder_id string
 	data2 := '{"url":"${file_url}"}'
 	url := '_action/media/${shopres.data.id}/upload?extension=${ext2}&fileName=${strip(name)}'
 	resp := l.fetch(.post, url, data2)
-	if resp.status_code == 500 {
+	if resp.status_code == 500 || // before shopware 6.5
+		resp.status_code == 409 { // since shopware 6.5
 		shopr := json.decode(ShopResponseError, resp.body)!
 		for e in shopr.errors {
 			if e.code == 'CONTENT__MEDIA_DUPLICATED_FILE_NAME' {

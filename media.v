@@ -114,3 +114,66 @@ pub fn (mut l Login) update_media_from_url(media_id string, url string) {
 		println(resp.body)
 	}
 }
+
+pub fn (mut l Login) upload_replace(file_url string, name string, media_folder_id string, existing_media_id string) !string {
+	data := '{"mediaFolderId": "${media_folder_id}"}'
+	ext := os.file_ext(file_url)
+	ext2 := ext[1..]
+	data2 := '{"url":"${file_url}"}'
+
+	l.auth()
+	url := l.api_url +
+		'_action/media/${existing_media_id}/upload?extension=${ext2}&fileName=${strip(name)}'
+
+	config := http.FetchConfig{
+		header: http.new_header(http.HeaderConfig{
+			key: .content_type
+			value: default_content_type
+		}, http.HeaderConfig{
+			key: .accept
+			value: accept_all
+		}, http.HeaderConfig{
+			key: .authorization
+			value: 'Bearer ${l.token.access_token}'
+		})
+		method: .post
+		url: url
+		data: data2
+	}
+
+	resp := http.fetch(config) or {
+		println('HTTP POST request to shop failed - url: ${url} - error:')
+		println(err)
+		exit(1)
+	}
+	if resp.status_code == 500 {
+		shopr := json.decode(ShopResponse, resp.body) or {
+			println("Can't json decode shop response - response from shop:")
+			println(resp.body)
+			exit(1)
+		}
+		for e in shopr.errors {
+			if e.code == 'CONTENT__MEDIA_DUPLICATED_FILE_NAME' {
+				return error('Error duplicate file name')
+			}
+		}
+	}
+	if resp.status_code != 204 && resp.status_code != 200 {
+		println('Error response from shop at POST - url: ${url} - statuscode: ${resp.status_code} - response from shop:')
+		println(resp.body)
+		println('Data send to shop:')
+		println(data)
+		exit(1)
+	}
+	if resp.status_code == 204 {
+		location := resp.header.get(.location) or { '' }
+		if location != '' {
+			pos := location.last_index('/') or { -1 }
+			return location[pos + 1..]
+		} else {
+			return resp.body
+		}
+	} else {
+		return resp.body
+	}
+}

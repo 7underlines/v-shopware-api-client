@@ -56,7 +56,7 @@ struct ShopResponseSyncError {
 }
 
 pub struct ShopResponseData {
-pub:
+pub mut:
 	id         string
 	type_      string     @[json: 'type'] // type is a reserved word
 	attributes Attributes
@@ -65,7 +65,7 @@ pub:
 type Any = []Any | bool | f64 | map[string]Any | string
 
 pub struct Attributes {
-pub:
+pub mut:
 	media_id               string         @[json: mediaId]
 	cover_id               string         @[json: coverId]
 	child_count            int            @[json: childCount]
@@ -84,6 +84,7 @@ pub:
 	meta_description       string         @[json: metaDescription]
 	meta_title             string         @[json: metaTitle]
 	is_closeout            bool           @[json: isCloseout]
+	is_closeout_raw        Any            @[json: isCloseout]
 	delivery_time_id       string         @[json: deliveryTimeId]
 }
 

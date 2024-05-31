@@ -86,6 +86,7 @@ pub mut:
 	is_closeout            bool           @[json: isCloseout]
 	is_closeout_raw        Any            @[json: isCloseout]
 	delivery_time_id       string         @[json: deliveryTimeId]
+	delivery_time_id_raw   Any            @[json: deliveryTimeId]
 }
 
 struct ErrorDetail {

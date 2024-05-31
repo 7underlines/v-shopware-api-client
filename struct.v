@@ -173,6 +173,8 @@ pub mut:
 	purchase_unit          f64                   @[json: 'purchaseUnit'; omitempty]
 	max_purchase           int                   @[json: 'maxPurchase'; omitempty]
 	configurator_settings  []ConfiguratorSetting @[json: 'configuratorSettings'; omitempty]
+	is_closeout            bool                  @[json: 'isCloseout'; omitempty]
+	delivery_time_id       string                @[json: 'deliveryTimeId'; omitempty]
 }
 
 pub struct ConfiguratorSetting {

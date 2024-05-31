@@ -83,6 +83,8 @@ pub:
 	breadcrumb             []string
 	meta_description       string         @[json: metaDescription]
 	meta_title             string         @[json: metaTitle]
+	is_closeout            bool           @[json: isCloseout]
+	delivery_time_id       string         @[json: deliveryTimeId]
 }
 
 struct ErrorDetail {

@@ -37,7 +37,7 @@ struct ShopResponse {
 pub:
 	errors   []ErrorDetail
 	data     []ShopResponseData
-	d        ShopResponseData   @[json: data]
+	d        ShopResponseData @[json: data]
 	meta     ShopResponseMeta
 	included []ShopResponseData
 }
@@ -58,7 +58,7 @@ struct ShopResponseSyncError {
 pub struct ShopResponseData {
 pub mut:
 	id         string
-	type_      string     @[json: 'type'] // type is a reserved word
+	type_      string @[json: 'type'] // type is a reserved word
 	attributes Attributes
 }
 
@@ -66,28 +66,28 @@ type Any = []Any | bool | f64 | map[string]Any | string
 
 pub struct Attributes {
 pub mut:
-	media_id               string         @[json: mediaId]
-	cover_id               string         @[json: coverId]
-	child_count            int            @[json: childCount]
+	media_id               string @[json: mediaId]
+	cover_id               string @[json: coverId]
+	child_count            int    @[json: childCount]
 	stock                  int
 	custom_fields          map[string]Any @[json: customFields]
 	active                 bool
-	product_number         string         @[json: productNumber]
-	custom_search_keywords []string       @[json: customSearchKeywords]
-	payment_method_id      string         @[json: paymentMethodId]
+	product_number         string   @[json: productNumber]
+	custom_search_keywords []string @[json: customSearchKeywords]
+	payment_method_id      string   @[json: paymentMethodId]
 	name                   string
-	parent_id              string         @[json: parentId]
-	cms_page_id            string         @[json: cmsPageId]
+	parent_id              string @[json: parentId]
+	cms_page_id            string @[json: cmsPageId]
 	price                  []Price
-	tax_id                 string         @[json: taxId]
+	tax_id                 string @[json: taxId]
 	breadcrumb             []string
-	meta_description       string         @[json: metaDescription]
-	meta_title             string         @[json: metaTitle]
-	is_closeout            bool           @[json: isCloseout]
-	is_closeout_raw        Any            @[json: isCloseout]
-	delivery_time_id       string         @[json: deliveryTimeId]
-	delivery_time_id_raw   Any            @[json: deliveryTimeId]
-	order_number           string         @[json: orderNumber]
+	meta_description       string @[json: metaDescription]
+	meta_title             string @[json: metaTitle]
+	is_closeout            bool   @[json: isCloseout]
+	is_closeout_raw        Any    @[json: isCloseout]
+	delivery_time_id       string @[json: deliveryTimeId]
+	delivery_time_id_raw   Any    @[json: deliveryTimeId]
+	order_number           string @[json: orderNumber]
 }
 
 struct ErrorDetail {
@@ -167,7 +167,7 @@ pub mut:
 	cover_id               string                @[json: 'coverId'; omitempty]
 	unit_id                string                @[json: 'unitId'; omitempty]
 	media                  []ProductMedia        @[omitempty]
-	custom_fields          CustomField           @[json: 'customFields'; omitempty]
+	custom_fields          ?CustomField          @[json: 'customFields'; omitempty]
 	ean                    string                @[omitempty]
 	meta_title             string                @[json: 'metaTitle'; omitempty]
 	meta_description       string                @[json: 'metaDescription'; omitempty]
@@ -217,7 +217,7 @@ pub mut:
 	net         f64
 	gross       f64
 	currency_id string = 'b7d2554b0ce847cd82f3ac9bd1c0dfca' @[json: 'currencyId']
-	linked      bool = true
+	linked      bool   = true
 }
 
 pub struct Media {
@@ -241,13 +241,13 @@ pub mut:
 
 pub struct CustomField {
 pub mut:
-	custom_import_field1 string @[omitempty]
-	custom_import_field2 string @[omitempty]
-	custom_import_field3 string @[omitempty]
-	custom_import_field4 string @[omitempty]
-	custom_import_field5 string @[omitempty]
-	custom_import_field6 string @[omitempty]
-	custom_import_field7 string @[omitempty]
-	custom_import_field8 string @[omitempty]
-	custom_import_field9 string @[omitempty]
+	custom_import_field1 ?string @[omitempty]
+	custom_import_field2 ?string @[omitempty]
+	custom_import_field3 ?string @[omitempty]
+	custom_import_field4 ?string @[omitempty]
+	custom_import_field5 ?string @[omitempty]
+	custom_import_field6 ?string @[omitempty]
+	custom_import_field7 ?string @[omitempty]
+	custom_import_field8 ?string @[omitempty]
+	custom_import_field9 ?string @[omitempty]
 }

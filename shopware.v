@@ -154,7 +154,7 @@ fn (mut l Login) fetch(method http.Method, url string, data string) http.Respons
 	if l.token.access_token == '' {
 		return http.Response{}
 	}
-	request := http.Request{
+	mut request := http.Request{
 		method: method
 		url: l.api_url + url
 		data: data
@@ -169,6 +169,30 @@ fn (mut l Login) fetch(method http.Method, url string, data string) http.Respons
 			key: .authorization
 			value: 'Bearer ${l.token.access_token}'
 		})
+	}
+	if l.inheritance {
+		request.header.add_custom('sw-inheritance', '1') or {
+			eprintln('sw-inheritance header contains invalid characters')
+			exit(1)
+		}
+	}
+	if l.language_id != '' {
+		request.header.add_custom('sw-language-id', l.language_id) or {
+			eprintln('sw-language-id header contains invalid characters')
+			exit(1)
+		}
+	}
+	if l.version_id != '' {
+		request.header.add_custom('sw-version-id', l.version_id) or {
+			eprintln('sw-version-id header contains invalid characters')
+			exit(1)
+		}
+	}
+	if l.currency_id != '' {
+		request.header.add_custom('sw-currency-id', l.currency_id) or {
+			eprintln('sw-currency-id header contains invalid characters')
+			exit(1)
+		}
 	}
 	resp := request.do() or {
 		eprintln('HTTP ${method} request to shop failed - url: ${l.api_url}${url} - error: ${err}')

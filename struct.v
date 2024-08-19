@@ -16,7 +16,11 @@ pub:
 	client_id     string
 	client_secret string
 pub mut:
-	api_url string = 'localhost'
+	api_url     string = 'localhost'
+	inheritance bool
+	language_id string
+	version_id  string
+	currency_id string
 }
 
 struct AuthToken {

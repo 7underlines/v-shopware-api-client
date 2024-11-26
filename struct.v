@@ -182,12 +182,18 @@ pub mut:
 	configurator_settings  []ConfiguratorSetting @[json: 'configuratorSettings'; omitempty]
 	is_closeout            ?bool                 @[json: 'isCloseout'; omitempty]
 	delivery_time_id       string                @[json: 'deliveryTimeId'; omitempty]
+	variant_listing_config VariantListingConfig  @[json: 'variantListingConfig'; omitempty]
 }
 
 pub struct ConfiguratorSetting {
 pub mut:
 	id        string @[omitempty]
 	option_id string @[json: 'optionId'; omitempty]
+}
+
+pub struct VariantListingConfig {
+pub mut:
+	display_parent ?bool @[json: 'displayParent'; omitempty]
 }
 
 pub struct ProductMedia {

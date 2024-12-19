@@ -71,8 +71,8 @@ type Any = []Any | bool | f64 | map[string]Any | string
 pub struct Attributes {
 pub mut:
 	media_id               ?string @[json: mediaId]
-	cover_id               string @[json: coverId]
-	child_count            int    @[json: childCount]
+	cover_id               string  @[json: coverId]
+	child_count            int     @[json: childCount]
 	stock                  int
 	custom_fields          map[string]Any @[json: customFields]
 	active                 bool
@@ -81,17 +81,17 @@ pub mut:
 	payment_method_id      string   @[json: paymentMethodId]
 	name                   string
 	parent_id              ?string @[json: parentId]
-	cms_page_id            string @[json: cmsPageId]
+	cms_page_id            string  @[json: cmsPageId]
 	price                  []Price
 	tax_id                 string @[json: taxId]
 	breadcrumb             []string
 	meta_description       ?string @[json: metaDescription]
 	meta_title             ?string @[json: metaTitle]
-	is_closeout            bool   @[json: isCloseout]
-	is_closeout_raw        Any    @[json: isCloseout]
-	delivery_time_id       string @[json: deliveryTimeId]
-	delivery_time_id_raw   Any    @[json: deliveryTimeId]
-	order_number           string @[json: orderNumber]
+	is_closeout            bool    @[json: isCloseout]
+	is_closeout_raw        Any     @[json: isCloseout]
+	delivery_time_id       string  @[json: deliveryTimeId]
+	delivery_time_id_raw   Any     @[json: deliveryTimeId]
+	order_number           string  @[json: orderNumber]
 }
 
 struct ErrorDetail {
@@ -183,6 +183,7 @@ pub mut:
 	is_closeout            ?bool                 @[json: 'isCloseout'; omitempty]
 	delivery_time_id       string                @[json: 'deliveryTimeId'; omitempty]
 	variant_listing_config VariantListingConfig  @[json: 'variantListingConfig'; omitempty]
+	active                 ?bool                 @[omitempty]
 }
 
 pub struct ConfiguratorSetting {

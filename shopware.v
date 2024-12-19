@@ -30,13 +30,13 @@ pub fn (mut l Login) auth() bool {
 
 	config := http.FetchConfig{
 		header: http.new_header(http.HeaderConfig{
-			key: .content_type
+			key:   .content_type
 			value: default_content_type
 		})
 		method: .post
-		url: url
-		data: json.encode(LoginShop{
-			client_id: l.client_id
+		url:    url
+		data:   json.encode(LoginShop{
+			client_id:     l.client_id
 			client_secret: l.client_secret
 		})
 	}
@@ -155,18 +155,18 @@ fn (mut l Login) fetch(method http.Method, url string, data string) http.Respons
 		return http.Response{}
 	}
 	mut request := http.Request{
-		method: method
-		url: l.api_url + url
-		data: data
+		method:       method
+		url:          l.api_url + url
+		data:         data
 		read_timeout: 120 * time.minute // -1 for no timeout somehow does not work
-		header: http.new_header(http.HeaderConfig{
-			key: .content_type
+		header:       http.new_header(http.HeaderConfig{
+			key:   .content_type
 			value: default_content_type
 		}, http.HeaderConfig{
-			key: .accept
+			key:   .accept
 			value: accept_all
 		}, http.HeaderConfig{
-			key: .authorization
+			key:   .authorization
 			value: 'Bearer ${l.token.access_token}'
 		})
 	}
@@ -214,13 +214,13 @@ fn (mut l Login) fetch(method http.Method, url string, data string) http.Respons
 pub fn (mut l Login) sync(data string) !string {
 	l.auth()
 	mut h := http.new_header(http.HeaderConfig{
-		key: .content_type
+		key:   .content_type
 		value: default_content_type
 	}, http.HeaderConfig{
-		key: .accept
+		key:   .accept
 		value: accept_all
 	}, http.HeaderConfig{
-		key: .authorization
+		key:   .authorization
 		value: 'Bearer ${l.token.access_token}'
 	})
 	h.add_custom('single-operation', '1') or { return err } // hardcoded as of Shopware 6.5.1.0
@@ -229,11 +229,11 @@ pub fn (mut l Login) sync(data string) !string {
 	// 	panic(err)
 	// }
 	request := http.Request{
-		method: .post
-		url: l.api_url + '_action/sync'
-		data: data
+		method:       .post
+		url:          l.api_url + '_action/sync'
+		data:         data
 		read_timeout: 120 * time.minute // -1 for no timeout somehow does not work
-		header: h
+		header:       h
 	}
 	os.write_file(@FILE + '_api_retry_cache.json', data) or {
 		// eprintln('unable to create last sync log file - reason: ' + err.str())

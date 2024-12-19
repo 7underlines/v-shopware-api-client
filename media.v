@@ -81,18 +81,19 @@ pub fn (mut l Login) upload_file(media_id string, name string, _ext string, data
 	ext := _ext.replace('.', '')
 	config := http.FetchConfig{
 		header: http.new_header(http.HeaderConfig{
-			key: .content_type
+			key:   .content_type
 			value: 'image/${ext}'
 		}, http.HeaderConfig{
-			key: .accept
+			key:   .accept
 			value: accept_all
 		}, http.HeaderConfig{
-			key: .authorization
+			key:   .authorization
 			value: 'Bearer ${l.token.access_token}'
 		})
 		method: .post
-		url: l.api_url + '_action/media/${media_id}/upload?extension=${ext}&fileName=${strip(name)}'
-		data: data
+		url:    l.api_url +
+			'_action/media/${media_id}/upload?extension=${ext}&fileName=${strip(name)}'
+		data:   data
 	}
 	resp := http.fetch(config) or {
 		return error('HTTP POST request for file_upload for mediaId ${media_id} to shop failed - error: ${err}')
@@ -129,18 +130,18 @@ pub fn (mut l Login) upload_replace(file_url string, name string, media_folder_i
 
 	config := http.FetchConfig{
 		header: http.new_header(http.HeaderConfig{
-			key: .content_type
+			key:   .content_type
 			value: default_content_type
 		}, http.HeaderConfig{
-			key: .accept
+			key:   .accept
 			value: accept_all
 		}, http.HeaderConfig{
-			key: .authorization
+			key:   .authorization
 			value: 'Bearer ${l.token.access_token}'
 		})
 		method: .post
-		url: url
-		data: data2
+		url:    url
+		data:   data2
 	}
 
 	resp := http.fetch(config) or {

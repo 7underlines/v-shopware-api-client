@@ -62,7 +62,8 @@ pub fn (mut l Login) add_media_to_product(media_id string, product_id string, se
 		return
 	}
 	for p in pm.data {
-		if p.attributes.media_id == media_id {
+		p_media_id := p.attributes.media_id or { '' }
+		if p_media_id == media_id {
 			product_media_id = p.id
 		}
 	}

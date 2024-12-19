@@ -70,7 +70,7 @@ type Any = []Any | bool | f64 | map[string]Any | string
 
 pub struct Attributes {
 pub mut:
-	media_id               string @[json: mediaId]
+	media_id               ?string @[json: mediaId]
 	cover_id               string @[json: coverId]
 	child_count            int    @[json: childCount]
 	stock                  int
@@ -80,13 +80,13 @@ pub mut:
 	custom_search_keywords []string @[json: customSearchKeywords]
 	payment_method_id      string   @[json: paymentMethodId]
 	name                   string
-	parent_id              string @[json: parentId]
+	parent_id              ?string @[json: parentId]
 	cms_page_id            string @[json: cmsPageId]
 	price                  []Price
 	tax_id                 string @[json: taxId]
 	breadcrumb             []string
-	meta_description       string @[json: metaDescription]
-	meta_title             string @[json: metaTitle]
+	meta_description       ?string @[json: metaDescription]
+	meta_title             ?string @[json: metaTitle]
 	is_closeout            bool   @[json: isCloseout]
 	is_closeout_raw        Any    @[json: isCloseout]
 	delivery_time_id       string @[json: deliveryTimeId]

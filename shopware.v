@@ -242,10 +242,16 @@ pub fn (mut l Login) sync(data string) !string {
 		eprintln('Unable to make HTTP sync request to shop')
 		eprintln(err)
 		eprintln('Retrying ...')
-		time.sleep(60 * time.second)
+		time.sleep(120 * time.second)
+		l.auth()
 		request.do() or {
-			eprintln('sync request also failed on retry - error: ${err} - giving up')
-			return err
+			eprintln('sync request also failed on retry - error: ${err} - doing one last retry ...')
+			time.sleep(300 * time.second)
+			l.auth()
+			request.do() or {
+				eprintln('sync request also failed on second retry - error: ${err} - giving up')
+				return err
+			}
 		}
 	}
 	if resp.status_code != 204 && resp.status_code != 200 {
@@ -276,7 +282,7 @@ pub fn (mut l Login) sync(data string) !string {
 				eprintln('Retrying ...')
 				time.sleep(60 * time.second)
 				request.do() or {
-					eprintln('sync request also failed on retry - error: ${err} - giving up')
+					eprintln('sync retry request also failed on retry - error: ${err} - giving up')
 					return err
 				}
 			}
@@ -293,10 +299,10 @@ pub fn (mut l Login) sync(data string) !string {
 
 // sync_upsert is a shorthand function for sync with data chunking for large arrays
 pub fn (mut l Login) sync_upsert(entity string, data []string) {
-	chunks := arrays.chunk(data, 12) // split into chunks
+	chunks := arrays.chunk(data, 11) // split into chunks
 	for i, chunk in chunks {
 		if i > 0 {
-			// time.sleep(2000 * time.millisecond)
+			time.sleep(200 * time.millisecond)
 		}
 		c := chunk.filter(it != '')
 		sync_data := '{"v-sync-${entity}":{"entity":"${entity}","action":"upsert","payload":[' +

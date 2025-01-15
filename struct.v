@@ -262,3 +262,10 @@ pub mut:
 	custom_import_field8 ?string @[omitempty]
 	custom_import_field9 ?string @[omitempty]
 }
+
+@[params]
+pub struct ChunkParams {
+pub:
+	size int = 10
+	sleep int = 300
+}

@@ -202,6 +202,7 @@ fn (mut l Login) fetch(method http.Method, url string, data string) http.Respons
 		return resp
 	}
 	eprintln('Retry')
+	time.sleep(1 * time.second)
 	l.auth()
 	resp2 := request.do() or {
 		eprintln('Retry failed again')

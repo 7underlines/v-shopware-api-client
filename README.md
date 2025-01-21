@@ -2,6 +2,13 @@
 
 This is a pure [V](https://vlang.io) module that can be used to communicate with [Shopware 6](https://github.com/shopware/platform).
 
+**Important**: Functions like `sync_upsert()` will make several API calls. V comes with a version of mbedtls that will throw errors such as `response does not start with HTTP/` if the API doesn't respond immediately. To work around this, always compile using `-d use_openssl`. [V OpenSSL](https://github.com/vlang/v?tab=readme-ov-file#v-nethttp-netwebsocket-v-install)
+
+```sh
+v -d use_openssl run .
+v -d use_openssl .
+```
+
 Requires at least Shopware version 6.4.
 
 Shopware Admin API credentials can be generated in the shopware backend (Settings->System->Integrations).

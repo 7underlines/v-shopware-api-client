@@ -267,5 +267,5 @@ pub mut:
 pub struct ChunkParams {
 pub:
 	size  int = 100
-	sleep int = 0
+	sleep int
 }

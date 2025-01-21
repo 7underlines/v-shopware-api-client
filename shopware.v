@@ -256,7 +256,7 @@ pub fn (mut l Login) sync(data string) !string {
 	}
 	if resp.status_code != 204 && resp.status_code != 200 {
 		// eprintln('Error response from shop at sync - statuscode: ${resp.status_code}')
-		if resp.body.contains('"source":{"pointer":') {
+		if resp.body.len > 30 && resp.body.contains('"source":{"pointer":') && data.len > 5 {
 			e := json.decode(ShopResponseSyncError, resp.body) or { return error(resp.body) }
 			pos := data[1..].index('{') or { -1 }
 			if pos > -1 {

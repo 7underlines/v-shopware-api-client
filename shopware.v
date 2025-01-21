@@ -233,7 +233,6 @@ pub fn (mut l Login) sync(data string) !string {
 		method:       .post
 		url:          l.api_url + '_action/sync'
 		data:         data
-		read_timeout: 120 * time.minute // -1 for no timeout somehow does not work
 		header:       h
 	}
 	os.write_file(@FILE + '_api_retry_cache.json', data) or {
@@ -323,20 +322,6 @@ pub fn (mut l Login) sync_upsert(entity string, data []string, params ChunkParam
 		}
 	}
 }
-
-// sync_upsert_queue doesn't immediatly process sync operations and must be processed with the Shopware 6 message queue
-// pub fn (mut l Login) sync_upsert_queue(entity string, data []string) {
-// 	chunks := arrays.chunk(data, 400) // split into chunks
-// 	for i, chunk in chunks {
-// 		c := chunk.filter(it != '')
-// 		sync_data := '{"v-sync-${entity}":{"entity":"${entity}","action":"upsert","payload":[' +
-// 			c.join(',') + ']}}'
-// 		l.sync(sync_data) or {
-// 			eprintln('sync upsert queue failed - error: ${err}')
-// 			return
-// 		}
-// 	}
-// }
 
 // sync_delete is a shorthand function for sync with data chunking for large arrays
 pub fn (mut l Login) sync_delete(entity string, data []string) {

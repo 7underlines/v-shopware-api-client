@@ -184,6 +184,7 @@ pub mut:
 	delivery_time_id       string                @[json: 'deliveryTimeId'; omitempty]
 	variant_listing_config VariantListingConfig  @[json: 'variantListingConfig'; omitempty]
 	active                 ?bool                 @[omitempty]
+	tags                   []Id                  @[omitempty]
 }
 
 pub struct ConfiguratorSetting {

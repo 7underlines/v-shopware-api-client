@@ -1,2 +1,3 @@
 *.json
 create_products.v
+.DS_Store

@@ -230,10 +230,10 @@ pub fn (mut l Login) sync(data string) !string {
 	// 	panic(err)
 	// }
 	request := http.Request{
-		method:       .post
-		url:          l.api_url + '_action/sync'
-		data:         data
-		header:       h
+		method: .post
+		url:    l.api_url + '_action/sync'
+		data:   data
+		header: h
 	}
 	os.write_file(@FILE + '_api_retry_cache.json', data) or {
 		// eprintln('unable to create last sync log file - reason: ' + err.str())

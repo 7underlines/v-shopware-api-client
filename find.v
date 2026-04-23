@@ -60,7 +60,8 @@ pub fn (mut l Login) find_subcategory_by_name(name string, parent string) !ShopR
 }
 
 pub fn (mut l Login) find_property_by_name(name string, group string) !ShopResponseData {
-	response_raw := l.get('property-group-option/?filter[name]=${encode(name)}&filter[groupId]=${group}')
+	response_raw :=
+		l.get('property-group-option/?filter[name]=${encode(name)}&filter[groupId]=${group}')
 	response := json.decode(ShopResponseFind, response_raw) or {
 		eprintln(err)
 		ShopResponseFind{}
@@ -79,7 +80,8 @@ pub fn (mut l Login) find_media_by_name(name string) !ShopResponseData {
 	if ext.len > 0 {
 		ext = ext[1..]
 	}
-	response_raw := l.get('media/?filter[fileName]=${encode(strip(name_without_ext))}&filter[fileExtension]=${ext}')
+	response_raw :=
+		l.get('media/?filter[fileName]=${encode(strip(name_without_ext))}&filter[fileExtension]=${ext}')
 	response := json.decode(ShopResponseFind, response_raw) or {
 		eprintln(err)
 		ShopResponseFind{}
@@ -117,7 +119,8 @@ pub fn (mut l Login) get_default_sales_channel() string {
 		eprintln('No sales channel type with name "Storefront" found')
 		return ''
 	}
-	sales_channel_response := l.get('sales-channel-type/${sales_channel_type_data.data[0].id}/salesChannels?limit=1&active=true&sort=createdAt')
+	sales_channel_response :=
+		l.get('sales-channel-type/${sales_channel_type_data.data[0].id}/salesChannels?limit=1&active=true&sort=createdAt')
 	sales_channel_data := json.decode(ShopResponseFind, sales_channel_response) or {
 		eprintln(err)
 		ShopResponseFind{}
@@ -139,7 +142,8 @@ pub fn (mut l Login) get_default_payment_method() string {
 		eprintln('No sales channel type with name "Storefront" found')
 		return ''
 	}
-	sales_channel_response := l.get('sales-channel-type/${sales_channel_type_data.data[0].id}/salesChannels')
+	sales_channel_response :=
+		l.get('sales-channel-type/${sales_channel_type_data.data[0].id}/salesChannels')
 	sales_channel_data := json.decode(ShopResponseFind, sales_channel_response) or {
 		eprintln(err)
 		ShopResponseFind{}

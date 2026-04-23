@@ -234,8 +234,8 @@ pub mut:
 
 pub struct Media {
 pub:
-	id              string @[omitempty]
-	media_folder_id string @[json: 'mediaFolderId'; omitempty]
+	id              string       @[omitempty]
+	media_folder_id string       @[json: 'mediaFolderId'; omitempty]
 	custom_fields   ?CustomField @[json: 'customFields'; omitempty]
 }
 

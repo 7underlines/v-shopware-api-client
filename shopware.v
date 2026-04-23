@@ -352,7 +352,7 @@ pub fn (mut l Login) resend_sync() {
 }
 
 pub fn decode(data string) map[string]json2.Any {
-	d := json2.raw_decode(data) or { return map[string]json2.Any{} }
+	d := json2.decode[json2.Any](data, json2.DecoderOptions{}) or { return map[string]json2.Any{} }
 	m := d.as_map()
 	return m
 }
